@@ -8,18 +8,24 @@
   :root {
     --color-bg: #ffffff;
     --color-surface: #f7f9fc;
+    --color-surface-2: #eef3fb;
     --color-ink: #0f1e3d;
     --color-ink-soft: #3a4a6b;
     --color-muted: #6b7a99;
     --color-accent: #1f6feb;
+    --color-accent-soft: #6ea8ff;
     --color-accent-dark: #0a4bb8;
+    --color-glow: #b8d0ff;
     --color-success: #0f9d6e;
-    --color-warning: #c2410c;
+    --color-warning: #e5461d;        /* aligned with the logo's orange tile */
+    --color-warning-deep: #c2410c;
     --color-border: #e2e8f0;
     --radius: 12px;
+    --radius-lg: 18px;
     --shadow-sm: 0 1px 2px rgba(15, 30, 61, 0.06);
     --shadow-md: 0 6px 20px rgba(15, 30, 61, 0.08);
     --shadow-lg: 0 16px 40px rgba(15, 30, 61, 0.18);
+    --shadow-glow: 0 0 0 6px rgba(31, 111, 235, 0.08), 0 18px 40px rgba(31, 111, 235, 0.18);
   }
 
   * { box-sizing: border-box; }
@@ -28,89 +34,144 @@
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Helvetica, Arial, sans-serif;
     color: var(--color-ink);
-    background: var(--color-surface);
+    background:
+      radial-gradient(1200px 600px at 50% -200px, rgba(31, 111, 235, 0.10), transparent 60%),
+      var(--color-surface);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
   .page {
+    position: relative;
     max-width: 880px;
     margin: 40px auto;
     background: var(--color-bg);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     overflow: hidden;
   }
 
-  /* ---------- HERO ---------- */
+  /* Decorative top hairline glow */
+  .page::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), var(--color-glow), var(--color-accent), transparent);
+    z-index: 5;
+  }
+
+  /* ============================================================
+     HERO — slim, confident, with motion
+     ============================================================ */
   .hero {
+    position: relative;
     background: linear-gradient(135deg, #1f6feb 0%, #0f1e3d 100%);
     color: #ffffff;
-    padding: 28px 32px 22px;
+    padding: 36px 56px 32px;
+    overflow: hidden;
+  }
+
+  /* Soft glow orbs in the hero */
+  .hero::before,
+  .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(40px);
+  }
+  .hero::before {
+    width: 280px; height: 280px;
+    top: -120px; right: -80px;
+    background: rgba(184, 208, 255, 0.25);
+  }
+  .hero::after {
+    width: 200px; height: 200px;
+    bottom: -120px; left: -40px;
+    background: rgba(31, 111, 235, 0.35);
+  }
+
+  .hero-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    z-index: 1;
   }
 
   .hero-logo {
     display: flex;
     align-items: center;
-    gap: 14px;
-
     color: #ffffff;
   }
 
   .hero-logo .logo {
-    text-align: center;
-    height: 48px;
-    width: 132px;
+    height: 52px;
+    width: 144px;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
     background: linear-gradient(90deg, #ffffff 0%, #b8d0ff 100%);
--webkit-mask-image: url("data:image/svg+xml,%3Csvg width%3D%22100%25%22 height%3D%22100%25%22 viewBox%3D%220 0 753 226%22 version%3D%221.1%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22 xml%3Aspace%3D%22preserve%22 xmlns%3Aserif%3D%22http%3A%2F%2Fwww.serif.com%2F%22 style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A2%3B%22%3E%3Cg id%3D%22Averify-Logo%22 serif%3Aid%3D%22Averify Logo%22%3E%3Cpath id%3D%22Averify%22 d%3D%22M326.604%2C92.475L326.604%2C160.113L311.701%2C160.113L311.701%2C148.84C301.192%2C158.202 291.065%2C162.214 279.601%2C162.214C260.495%2C162.214 249.986%2C149.413 249.986%2C134.319C249.986%2C110.435 267.564%2C103.366 299.281%2C99.736L311.318%2C98.207L311.318%2C92.666C311.318%2C76.999 299.663%2C71.649 289.346%2C71.649C278.073%2C71.649 269.475%2C76.235 260.113%2C84.833L252.088%2C75.088C263.552%2C64.58 275.78%2C59.803 290.11%2C59.803C311.701%2C59.803 326.604%2C71.458 326.604%2C92.475ZM265.462%2C133.746C265.462%2C142.917 272.15%2C150.177 283.805%2C150.177C293.549%2C150.177 301.383%2C145.974 311.318%2C137.567L311.318%2C108.907L302.911%2C109.862C273.678%2C113.684 265.462%2C120.371 265.462%2C133.746ZM752.316%2C71.04C752.316%2C65.418 748.076%2C61.006 742.686%2C61.006L742.556%2C61.006C737.146%2C61.006 732.906%2C65.418 732.906%2C71.04L732.906%2C71.168C732.906%2C76.808 737.146%2C81.22 742.556%2C81.22L742.686%2C81.22C748.076%2C81.22 752.316%2C76.808 752.316%2C71.168L752.316%2C71.04ZM750.136%2C71.04L750.136%2C71.168C750.136%2C75.526 746.846%2C78.95 742.686%2C78.95L742.556%2C78.95C738.376%2C78.95 735.086%2C75.526 735.086%2C71.168L735.086%2C71.04C735.086%2C66.7 738.376%2C63.276 742.556%2C63.276L742.686%2C63.276C746.846%2C63.276 750.136%2C66.7 750.136%2C71.04ZM738.746%2C76.24L741.046%2C76.24L741.046%2C72.743L742.666%2C72.743L744.526%2C76.24L747.146%2C76.24L745.006%2C72.34C746.126%2C71.882 746.846%2C70.728 746.846%2C69.428L746.846%2C69.41C746.846%2C67.213 745.466%2C65.986 743.066%2C65.986L738.746%2C65.986L738.746%2C76.24ZM741.066%2C70.802L741.066%2C68.018L742.806%2C68.018C743.826%2C68.018 744.496%2C68.568 744.496%2C69.41C744.496%2C70.252 743.866%2C70.802 742.846%2C70.802L741.066%2C70.802ZM414.685%2C61.523L377.618%2C160.113L363.48%2C160.113L326.604%2C61.523L342.844%2C61.523L370.74%2C140.242L399.209%2C61.523L414.685%2C61.523ZM498.372%2C113.11L428.633%2C113.11C429.015%2C137.185 442.963%2C149.604 457.866%2C149.604C467.802%2C149.604 477.546%2C145.974 486.908%2C133.937L497.035%2C143.299C486.144%2C156.864 473.152%2C162.214 457.102%2C162.214C432.837%2C162.214 413.157%2C144.254 413.157%2C110.627C413.157%2C78.528 431.499%2C59.803 455.574%2C59.803C487.482%2C59.803 498.372%2C88.272 498.372%2C113.11ZM429.206%2C102.029L482.514%2C102.029C480.985%2C84.068 471.05%2C71.84 455.956%2C71.84C441.435%2C71.84 430.926%2C84.451 429.206%2C102.029ZM561.615%2C63.051L554.928%2C76.617C551.871%2C74.897 549.578%2C74.133 545.375%2C74.133C536.777%2C74.133 527.414%2C81.967 520.727%2C90.947L520.727%2C160.113L505.633%2C160.113L505.633%2C61.523L520.345%2C61.523L520.345%2C76.808C526.841%2C68.592 536.395%2C59.612 547.859%2C59.612C553.208%2C59.612 557.412%2C60.376 561.615%2C63.051ZM585.115%2C40.505L569.257%2C40.505L569.257%2C25.793L585.115%2C25.793L585.115%2C40.505ZM569.83%2C160.113L569.83%2C61.523L584.733%2C61.523L584.733%2C160.113L569.83%2C160.113ZM724.212%2C61.523L684.471%2C172.532C678.548%2C189.537 671.287%2C195.842 652.18%2C195.842C648.168%2C195.842 643.009%2C195.078 639.952%2C193.931L639.952%2C181.512C642.818%2C181.894 648.932%2C182.849 652.371%2C182.849C662.307%2C182.849 666.701%2C178.646 671.096%2C167.373L675.682%2C155.145L642.818%2C73.56L622.756%2C73.56L622.756%2C160.113L607.28%2C160.113L607.28%2C73.56L591.421%2C73.56L591.421%2C61.523L607.28%2C61.523L607.28%2C51.778C607.28%2C33.627 616.451%2C25.984 635.94%2C25.984C640.334%2C25.984 645.111%2C26.558 648.359%2C26.94L648.359%2C39.359C645.302%2C38.977 640.907%2C38.022 636.322%2C38.022C627.533%2C38.022 622.756%2C41.461 622.756%2C51.778L622.756%2C61.523L654.091%2C61.523L683.324%2C136.229L708.736%2C61.523L724.212%2C61.523Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath id%3D%22Checkmark%22 d%3D%22M113.265%2C113.263L169.266%2C57.263L113.265%2C1.262L1.264%2C113.264L113.264%2C225.263L225.264%2C113.263L197.268%2C85.265L113.264%2C169.263L57.262%2C113.263L85.265%2C85.263L113.265%2C113.263Z%22 style%3D%22fill%3A%23fff%3B%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
-mask-image: url("data:image/svg+xml,%3Csvg width%3D%22100%25%22 height%3D%22100%25%22 viewBox%3D%220 0 753 226%22 version%3D%221.1%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22 xml%3Aspace%3D%22preserve%22 xmlns%3Aserif%3D%22http%3A%2F%2Fwww.serif.com%2F%22 style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A2%3B%22%3E%3Cg id%3D%22Averify-Logo%22 serif%3Aid%3D%22Averify Logo%22%3E%3Cpath id%3D%22Averify%22 d%3D%22M326.604%2C92.475L326.604%2C160.113L311.701%2C160.113L311.701%2C148.84C301.192%2C158.202 291.065%2C162.214 279.601%2C162.214C260.495%2C162.214 249.986%2C149.413 249.986%2C134.319C249.986%2C110.435 267.564%2C103.366 299.281%2C99.736L311.318%2C98.207L311.318%2C92.666C311.318%2C76.999 299.663%2C71.649 289.346%2C71.649C278.073%2C71.649 269.475%2C76.235 260.113%2C84.833L252.088%2C75.088C263.552%2C64.58 275.78%2C59.803 290.11%2C59.803C311.701%2C59.803 326.604%2C71.458 326.604%2C92.475ZM265.462%2C133.746C265.462%2C142.917 272.15%2C150.177 283.805%2C150.177C293.549%2C150.177 301.383%2C145.974 311.318%2C137.567L311.318%2C108.907L302.911%2C109.862C273.678%2C113.684 265.462%2C120.371 265.462%2C133.746ZM752.316%2C71.04C752.316%2C65.418 748.076%2C61.006 742.686%2C61.006L742.556%2C61.006C737.146%2C61.006 732.906%2C65.418 732.906%2C71.04L732.906%2C71.168C732.906%2C76.808 737.146%2C81.22 742.556%2C81.22L742.686%2C81.22C748.076%2C81.22 752.316%2C76.808 752.316%2C71.168L752.316%2C71.04ZM750.136%2C71.04L750.136%2C71.168C750.136%2C75.526 746.846%2C78.95 742.686%2C78.95L742.556%2C78.95C738.376%2C78.95 735.086%2C75.526 735.086%2C71.168L735.086%2C71.04C735.086%2C66.7 738.376%2C63.276 742.556%2C63.276L742.686%2C63.276C746.846%2C63.276 750.136%2C66.7 750.136%2C71.04ZM738.746%2C76.24L741.046%2C76.24L741.046%2C72.743L742.666%2C72.743L744.526%2C76.24L747.146%2C76.24L745.006%2C72.34C746.126%2C71.882 746.846%2C70.728 746.846%2C69.428L746.846%2C69.41C746.846%2C67.213 745.466%2C65.986 743.066%2C65.986L738.746%2C65.986L738.746%2C76.24ZM741.066%2C70.802L741.066%2C68.018L742.806%2C68.018C743.826%2C68.018 744.496%2C68.568 744.496%2C69.41C744.496%2C70.252 743.866%2C70.802 742.846%2C70.802L741.066%2C70.802ZM414.685%2C61.523L377.618%2C160.113L363.48%2C160.113L326.604%2C61.523L342.844%2C61.523L370.74%2C140.242L399.209%2C61.523L414.685%2C61.523ZM498.372%2C113.11L428.633%2C113.11C429.015%2C137.185 442.963%2C149.604 457.866%2C149.604C467.802%2C149.604 477.546%2C145.974 486.908%2C133.937L497.035%2C143.299C486.144%2C156.864 473.152%2C162.214 457.102%2C162.214C432.837%2C162.214 413.157%2C144.254 413.157%2C110.627C413.157%2C78.528 431.499%2C59.803 455.574%2C59.803C487.482%2C59.803 498.372%2C88.272 498.372%2C113.11ZM429.206%2C102.029L482.514%2C102.029C480.985%2C84.068 471.05%2C71.84 455.956%2C71.84C441.435%2C71.84 430.926%2C84.451 429.206%2C102.029ZM561.615%2C63.051L554.928%2C76.617C551.871%2C74.897 549.578%2C74.133 545.375%2C74.133C536.777%2C74.133 527.414%2C81.967 520.727%2C90.947L520.727%2C160.113L505.633%2C160.113L505.633%2C61.523L520.345%2C61.523L520.345%2C76.808C526.841%2C68.592 536.395%2C59.612 547.859%2C59.612C553.208%2C59.612 557.412%2C60.376 561.615%2C63.051ZM585.115%2C40.505L569.257%2C40.505L569.257%2C25.793L585.115%2C25.793L585.115%2C40.505ZM569.83%2C160.113L569.83%2C61.523L584.733%2C61.523L584.733%2C160.113L569.83%2C160.113ZM724.212%2C61.523L684.471%2C172.532C678.548%2C189.537 671.287%2C195.842 652.18%2C195.842C648.168%2C195.842 643.009%2C195.078 639.952%2C193.931L639.952%2C181.512C642.818%2C181.894 648.932%2C182.849 652.371%2C182.849C662.307%2C182.849 666.701%2C178.646 671.096%2C167.373L675.682%2C155.145L642.818%2C73.56L622.756%2C73.56L622.756%2C160.113L607.28%2C160.113L607.28%2C73.56L591.421%2C73.56L591.421%2C61.523L607.28%2C61.523L607.28%2C51.778C607.28%2C33.627 616.451%2C25.984 635.94%2C25.984C640.334%2C25.984 645.111%2C26.558 648.359%2C26.94L648.359%2C39.359C645.302%2C38.977 640.907%2C38.022 636.322%2C38.022C627.533%2C38.022 622.756%2C41.461 622.756%2C51.778L622.756%2C61.523L654.091%2C61.523L683.324%2C136.229L708.736%2C61.523L724.212%2C61.523Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath id%3D%22Checkmark%22 d%3D%22M113.265%2C113.263L169.266%2C57.263L113.265%2C1.262L1.264%2C113.264L113.264%2C225.263L225.264%2C113.263L197.268%2C85.265L113.264%2C169.263L57.262%2C113.263L85.265%2C85.263L113.265%2C113.263Z%22 style%3D%22fill%3A%23fff%3B%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
--webkit-mask-size: contain;
-mask-size: contain;
-background-color: currentColor;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg width%3D%22100%25%22 height%3D%22100%25%22 viewBox%3D%220 0 753 226%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%3E%3Cpath d%3D%22M326.604%2C92.475L326.604%2C160.113L311.701%2C160.113L311.701%2C148.84C301.192%2C158.202 291.065%2C162.214 279.601%2C162.214C260.495%2C162.214 249.986%2C149.413 249.986%2C134.319C249.986%2C110.435 267.564%2C103.366 299.281%2C99.736L311.318%2C98.207L311.318%2C92.666C311.318%2C76.999 299.663%2C71.649 289.346%2C71.649C278.073%2C71.649 269.475%2C76.235 260.113%2C84.833L252.088%2C75.088C263.552%2C64.58 275.78%2C59.803 290.11%2C59.803C311.701%2C59.803 326.604%2C71.458 326.604%2C92.475ZM265.462%2C133.746C265.462%2C142.917 272.15%2C150.177 283.805%2C150.177C293.549%2C150.177 301.383%2C145.974 311.318%2C137.567L311.318%2C108.907L302.911%2C109.862C273.678%2C113.684 265.462%2C120.371 265.462%2C133.746ZM414.685%2C61.523L377.618%2C160.113L363.48%2C160.113L326.604%2C61.523L342.844%2C61.523L370.74%2C140.242L399.209%2C61.523L414.685%2C61.523ZM498.372%2C113.11L428.633%2C113.11C429.015%2C137.185 442.963%2C149.604 457.866%2C149.604C467.802%2C149.604 477.546%2C145.974 486.908%2C133.937L497.035%2C143.299C486.144%2C156.864 473.152%2C162.214 457.102%2C162.214C432.837%2C162.214 413.157%2C144.254 413.157%2C110.627C413.157%2C78.528 431.499%2C59.803 455.574%2C59.803C487.482%2C59.803 498.372%2C88.272 498.372%2C113.11ZM429.206%2C102.029L482.514%2C102.029C480.985%2C84.068 471.05%2C71.84 455.956%2C71.84C441.435%2C71.84 430.926%2C84.451 429.206%2C102.029ZM561.615%2C63.051L554.928%2C76.617C551.871%2C74.897 549.578%2C74.133 545.375%2C74.133C536.777%2C74.133 527.414%2C81.967 520.727%2C90.947L520.727%2C160.113L505.633%2C160.113L505.633%2C61.523L520.345%2C61.523L520.345%2C76.808C526.841%2C68.592 536.395%2C59.612 547.859%2C59.612C553.208%2C59.612 557.412%2C60.376 561.615%2C63.051ZM585.115%2C40.505L569.257%2C40.505L569.257%2C25.793L585.115%2C25.793L585.115%2C40.505ZM569.83%2C160.113L569.83%2C61.523L584.733%2C61.523L584.733%2C160.113L569.83%2C160.113ZM724.212%2C61.523L684.471%2C172.532C678.548%2C189.537 671.287%2C195.842 652.18%2C195.842C648.168%2C195.842 643.009%2C195.078 639.952%2C193.931L639.952%2C181.512C642.818%2C181.894 648.932%2C182.849 652.371%2C182.849C662.307%2C182.849 666.701%2C178.646 671.096%2C167.373L675.682%2C155.145L642.818%2C73.56L622.756%2C73.56L622.756%2C160.113L607.28%2C160.113L607.28%2C73.56L591.421%2C73.56L591.421%2C61.523L607.28%2C61.523L607.28%2C51.778C607.28%2C33.627 616.451%2C25.984 635.94%2C25.984C640.334%2C25.984 645.111%2C26.558 648.359%2C26.94L648.359%2C39.359C645.302%2C38.977 640.907%2C38.022 636.322%2C38.022C627.533%2C38.022 622.756%2C41.461 622.756%2C51.778L622.756%2C61.523L654.091%2C61.523L683.324%2C136.229L708.736%2C61.523L724.212%2C61.523Z%22 fill%3D%22%23fff%22/%3E%3Cpath d%3D%22M113.265%2C113.263L169.266%2C57.263L113.265%2C1.262L1.264%2C113.264L113.264%2C225.263L225.264%2C113.263L197.268%2C85.265L113.264%2C169.263L57.262%2C113.263L85.265%2C85.263L113.265%2C113.263Z%22 fill%3D%22%23fff%22/%3E%3C/g%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg width%3D%22100%25%22 height%3D%22100%25%22 viewBox%3D%220 0 753 226%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%3E%3Cpath d%3D%22M326.604%2C92.475L326.604%2C160.113L311.701%2C160.113L311.701%2C148.84C301.192%2C158.202 291.065%2C162.214 279.601%2C162.214C260.495%2C162.214 249.986%2C149.413 249.986%2C134.319C249.986%2C110.435 267.564%2C103.366 299.281%2C99.736L311.318%2C98.207L311.318%2C92.666C311.318%2C76.999 299.663%2C71.649 289.346%2C71.649C278.073%2C71.649 269.475%2C76.235 260.113%2C84.833L252.088%2C75.088C263.552%2C64.58 275.78%2C59.803 290.11%2C59.803C311.701%2C59.803 326.604%2C71.458 326.604%2C92.475ZM265.462%2C133.746C265.462%2C142.917 272.15%2C150.177 283.805%2C150.177C293.549%2C150.177 301.383%2C145.974 311.318%2C137.567L311.318%2C108.907L302.911%2C109.862C273.678%2C113.684 265.462%2C120.371 265.462%2C133.746ZM414.685%2C61.523L377.618%2C160.113L363.48%2C160.113L326.604%2C61.523L342.844%2C61.523L370.74%2C140.242L399.209%2C61.523L414.685%2C61.523ZM498.372%2C113.11L428.633%2C113.11C429.015%2C137.185 442.963%2C149.604 457.866%2C149.604C467.802%2C149.604 477.546%2C145.974 486.908%2C133.937L497.035%2C143.299C486.144%2C156.864 473.152%2C162.214 457.102%2C162.214C432.837%2C162.214 413.157%2C144.254 413.157%2C110.627C413.157%2C78.528 431.499%2C59.803 455.574%2C59.803C487.482%2C59.803 498.372%2C88.272 498.372%2C113.11ZM429.206%2C102.029L482.514%2C102.029C480.985%2C84.068 471.05%2C71.84 455.956%2C71.84C441.435%2C71.84 430.926%2C84.451 429.206%2C102.029ZM561.615%2C63.051L554.928%2C76.617C551.871%2C74.897 549.578%2C74.133 545.375%2C74.133C536.777%2C74.133 527.414%2C81.967 520.727%2C90.947L520.727%2C160.113L505.633%2C160.113L505.633%2C61.523L520.345%2C61.523L520.345%2C76.808C526.841%2C68.592 536.395%2C59.612 547.859%2C59.612C553.208%2C59.612 557.412%2C60.376 561.615%2C63.051ZM585.115%2C40.505L569.257%2C40.505L569.257%2C25.793L585.115%2C25.793L585.115%2C40.505ZM569.83%2C160.113L569.83%2C61.523L584.733%2C61.523L584.733%2C160.113L569.83%2C160.113ZM724.212%2C61.523L684.471%2C172.532C678.548%2C189.537 671.287%2C195.842 652.18%2C195.842C648.168%2C195.842 643.009%2C195.078 639.952%2C193.931L639.952%2C181.512C642.818%2C181.894 648.932%2C182.849 652.371%2C182.849C662.307%2C182.849 666.701%2C178.646 671.096%2C167.373L675.682%2C155.145L642.818%2C73.56L622.756%2C73.56L622.756%2C160.113L607.28%2C160.113L607.28%2C73.56L591.421%2C73.56L591.421%2C61.523L607.28%2C61.523L607.28%2C51.778C607.28%2C33.627 616.451%2C25.984 635.94%2C25.984C640.334%2C25.984 645.111%2C26.558 648.359%2C26.94L648.359%2C39.359C645.302%2C38.977 640.907%2C38.022 636.322%2C38.022C627.533%2C38.022 622.756%2C41.461 622.756%2C51.778L622.756%2C61.523L654.091%2C61.523L683.324%2C136.229L708.736%2C61.523L724.212%2C61.523Z%22 fill%3D%22%23fff%22/%3E%3Cpath d%3D%22M113.265%2C113.263L169.266%2C57.263L113.265%2C1.262L1.264%2C113.264L113.264%2C225.263L225.264%2C113.263L197.268%2C85.265L113.264%2C169.263L57.262%2C113.263L85.265%2C85.263L113.265%2C113.263Z%22 fill%3D%22%23fff%22/%3E%3C/g%3E%3C/svg%3E");
   }
 
-  .hero h1 {
-    font-size: 32px;
-    line-height: 1.2;
-    margin: 0 0 14px;
-    font-weight: 700;
+  /* Tagline on the right side of the hero, balancing the logo */
+  .hero-tagline {
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-glow);
+    font-weight: 600;
+    text-align: right;
+    line-height: 1.5;
+  }
+  .hero-tagline strong {
+    display: block;
     color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.85;
   }
 
-  .hero p {
-    font-size: 17px;
-    margin: 0;
-    color: #e8efff;      /* fixed: was blending into gradient */
-    max-width: 640px;
-
-  }
-
-  /* ---------- CONTENT ---------- */
-  .content {
-    padding: 48px 56px;
-  }
-
-  section + section {
-    margin-top: 40px;
-  }
+  /* ============================================================
+     CONTENT
+     ============================================================ */
+  .content { padding: 48px 56px; }
+  section + section { margin-top: 44px; }
 
   h2 {
     font-size: 13px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-accent);
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  /* small decorative bar before each H2 */
+  h2::before {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-glow));
+    border-radius: 2px;
   }
 
   h3 {
-    font-size: 18px;
+    font-size: 20px;
     margin: 0 0 16px;
     color: var(--color-ink);
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   p {
@@ -119,99 +180,37 @@ background-color: currentColor;
     font-size: 16px;
   }
 
-  /* ---------- VALUE PILLARS ---------- */
-  ul.value-pillars {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  ul.value-pillars li {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    text-align: center;
-    font-weight: 600;
-    color: var(--color-ink);
-  }
-
-  ul.value-pillars li span {
-    display: block;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    margin-bottom: 4px;
-    font-weight: 700;
-  }
-
-  /* ---------- HOW IT WORKS (cleaner: dots only, no per-item border) ---------- */
-  ul.how-it-works {
-    list-style: none;
-    padding: 18px 22px;
-    margin: 16px 0 24px;
-    background: var(--color-surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-  }
-
-  ul.how-it-works li {
-    position: relative;
-    padding: 10px 8px 10px 36px;
-    color: var(--color-ink-soft);
-  }
-
-  ul.how-it-works li + li {
-    border-top: 1px solid var(--color-border);
-  }
-
-  ul.how-it-works li strong {
-    color: var(--color-ink);
-  }
-
-  ul.how-it-works li::before {
-    content: "";
-    position: absolute;
-    left: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.15);
-  }
-
-  /* ---------- QUESTIONS ---------- */
+  /* ============================================================
+     QUESTIONS (the three leaks)
+     ============================================================ */
   ol.questions {
     counter-reset: q;
     list-style: none;
     padding: 0;
-    margin: 16px 0;
+    margin: 18px 0;
   }
-
   ol.questions li {
     counter-increment: q;
     position: relative;
-    padding: 12px 16px 12px 52px;
-    margin-bottom: 8px;
+    padding: 14px 18px 14px 56px;
+    margin-bottom: 10px;
     color: var(--color-ink);
     font-weight: 500;
+    background: linear-gradient(135deg, #ffffff 0%, var(--color-surface) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
   }
-
   ol.questions li::before {
     content: counter(q);
     position: absolute;
-    left: 12px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
-    background: var(--color-ink);
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
     color: #fff;
     border-radius: 50%;
     display: flex;
@@ -219,138 +218,426 @@ background-color: currentColor;
     justify-content: center;
     font-size: 13px;
     font-weight: 700;
+    box-shadow: 0 4px 10px rgba(31, 111, 235, 0.35);
   }
 
-  /* ---------- METRICS ---------- */
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin: 24px 0 16px;
-  }
-
-  .metric {
-    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 20px 16px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .metric .label {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-
-  .metric .value {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--color-ink);
-    line-height: 1.1;
-  }
-
-  .metric .value.positive { color: var(--color-success); }
-  .metric .value.warning  { color: var(--color-warning); }
-
-  .metric .sub {
-    font-size: 12px;
-    color: var(--color-muted);
-    margin-top: 6px;
-  }
-
-  /* ---------- CALLOUT ---------- */
-  .callout {
-    background: var(--color-surface);
-    border-left: 4px solid var(--color-accent);
-    padding: 16px 20px;
-    border-radius: 6px;
-    margin: 16px 0;
-    color: var(--color-ink-soft);
-    font-size: 15px;
-  }
-
-  /* ---------- INTRODUCING AVERIFY — featured pop section ---------- */
-  .feature-section {
-    margin: 48px 0;
-    text-align: center;
-  }
+  /* ============================================================
+     FEATURED "INTRODUCING" — refined
+     ============================================================ */
+  .feature-section { margin: 48px 0; text-align: center; }
 
   .feature-card {
     position: relative;
-    background: linear-gradient(135deg, #0f1e3d 0%, #1f6feb 100%);
+    background:
+      radial-gradient(800px 400px at 80% -100px, rgba(184, 208, 255, 0.22), transparent 60%),
+      radial-gradient(600px 300px at 0% 120%, rgba(31, 111, 235, 0.45), transparent 60%),
+      linear-gradient(135deg, #0f1e3d 0%, #1f6feb 100%);
     color: #ffffff;
-    border-radius: 16px;
-    padding: 40px 44px;
+    border-radius: var(--radius-lg);
+    padding: 44px 44px 40px;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
   }
 
-  .feature-card::before,
-  .feature-card::after {
+  /* Soft "shimmer" line across the top */
+  .feature-card::before {
     content: "";
     position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    pointer-events: none;
-  }
-
-  .feature-card::before {
-    width: 220px;
-    height: 220px;
-    top: -90px;
-    right: -70px;
-  }
-
-  .feature-card::after {
-    width: 160px;
-    height: 160px;
-    bottom: -70px;
-    left: -50px;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
   }
 
   .feature-card .eyebrow {
     position: relative;
     font-size: 12px;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: #b8d0ff;
-    margin-bottom: 14px;
+    color: var(--color-glow);
+    margin-bottom: 18px;
     font-weight: 700;
   }
 
   .feature-card .headline {
     position: relative;
-    font-size: 30px;
-    line-height: 1.25;
     margin: 0;
-    font-weight: 700;
-    color: #ffffff;
   }
 
-  .brand-name img {
-    height: 122px;
+  .feature-card .brand-logo {
+    display: block;
+    margin: 0 auto 14px;
+    height: 88px;
+    width: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.35));
+  }
+
+  .feature-card .subhead {
+    position: relative;
+    font-size: 17px;
+    color: var(--color-glow);
+    margin: 0 0 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .feature-card .lede {
     position: relative;
-    font-size: 16px;
-    color: #e8efff;
-    margin: 14px auto 0;
+    font-size: 18px;
+    color: #ffffff;
+    margin: 0 auto;
     max-width: 560px;
-    line-height: 1.55;
+    line-height: 1.5;
+    font-weight: 500;
+    font-style: italic;
   }
 
-  /* Value definition paragraph + pillars sit below the feature card */
-  .feature-followup {
-    margin-top: 28px;
+  /* Value-pillar row that follows the card */
+  .feature-followup { margin-top: 32px; }
+
+  ul.value-pillars {
+    list-style: none;
+    padding: 0;
+    margin: 22px 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  ul.value-pillars li {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--color-ink);
+    font-size: 17px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  ul.value-pillars li::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-glow));
+  }
+  ul.value-pillars li span {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 8px;
+    font-weight: 700;
   }
 
-  /* ---------- FOOTER ---------- */
+  /* ============================================================
+     HOW IT WORKS — CIRCULAR FLOW (the main showpiece)
+     ============================================================ */
+  .flow {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 36px auto 16px;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Outer ambient glow */
+  .flow::before {
+    content: "";
+    position: absolute;
+    inset: -2%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%,
+        rgba(31, 111, 235, 0.10) 0%,
+        rgba(31, 111, 235, 0.04) 40%,
+        transparent 70%);
+    z-index: 0;
+  }
+
+  /* Inner dial */
+  .flow::after {
+    content: "";
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 25%, #ffffff 0%, var(--color-surface) 70%);
+    border: 1px solid var(--color-border);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      inset 0 -20px 40px rgba(31, 111, 235, 0.05),
+      var(--shadow-sm);
+    z-index: 0;
+  }
+
+  /* The orbital SVG — dashed ring + connector arcs + animated spark */
+  .flow-orbit {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  /* Animated dash flow on the orbital ring */
+  .flow-orbit .ring {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.25;
+    stroke-dasharray: 3 6;
+    opacity: 0.5;
+    animation: spin 60s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  /* Faint accent arcs sweeping around the center */
+  .flow-orbit .arc {
+    fill: none;
+    stroke: url(#arcGradient);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.7;
+  }
+
+  /* Connector arrows between steps */
+  .flow-orbit .connector {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    opacity: 0.4;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Central hub */
+  .flow-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 96px;
+    height: 96px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: var(--shadow-glow);
+    padding: 12px;
+    animation: hubPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes hubPulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(31, 111, 235, 0.08), 0 18px 40px rgba(31, 111, 235, 0.18); }
+    50%      { box-shadow: 0 0 0 10px rgba(31, 111, 235, 0.05), 0 22px 50px rgba(31, 111, 235, 0.28); }
+  }
+
+  .flow-hub svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 6px rgba(15, 30, 61, 0.15));
+  }
+
+  /* Each step is a polished card placed around the dial */
+  .flow-step {
+    position: absolute;
+    width: 32%;
+    z-index: 2;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .flow-step:hover {
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.03);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .flow-step::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 14px; right: 14px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-warning), #f18d05);
+    border-radius: 2px;
+  }
+
+  .flow-step .head {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .flow-step .num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-warning);
+    line-height: 1;
+  }
+
+  .flow-step .verb {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-warning);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .flow-step .desc {
+    color: var(--color-ink);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* Quadrant placement — using custom props so :hover transform is preserved */
+  .flow-step.step-1 { top: 2%;     left: 50%;  --tx: -50%; --ty: 0;     transform: translate(-50%, 0);     text-align: center; }
+  .flow-step.step-2 { top: 50%;    right: 0;   --tx: 0;    --ty: -50%;  transform: translateY(-50%);       text-align: left; }
+  .flow-step.step-3 { bottom: 2%;  left: 50%;  --tx: -50%; --ty: 0;     transform: translate(-50%, 0);     text-align: center; }
+  .flow-step.step-4 { top: 50%;    left: 0;    --tx: 0;    --ty: -50%;  transform: translateY(-50%);       text-align: right; }
+
+  /* Mobile fallback: stacked cards */
+  @media (max-width: 720px) {
+    .flow {
+      aspect-ratio: auto;
+      max-width: 100%;
+      margin: 18px auto;
+    }
+    .flow::before,
+    .flow::after,
+    .flow-orbit,
+    .flow-hub { display: none; }
+    .flow-step {
+      position: static;
+      width: 100%;
+      transform: none !important;
+      text-align: left !important;
+      margin-bottom: 12px;
+    }
+  }
+
+  /* ============================================================
+     METRICS (the outcome closer)
+     ============================================================ */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 26px 0 18px;
+  }
+  .metric {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 22px 16px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .metric:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .metric::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-success), #4dd1a1);
+  }
+  .metric.warn::before {
+    background: linear-gradient(90deg, var(--color-warning), #f18d05);
+  }
+  .metric .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .metric .value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-ink);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .metric .value.positive { color: var(--color-success); }
+  .metric .value.warning  { color: var(--color-warning); }
+  .metric .sub {
+    font-size: 12px;
+    color: var(--color-muted);
+    margin-top: 8px;
+  }
+
+  /* ============================================================
+     CALLOUT + CTA
+     ============================================================ */
+  .callout {
+    background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
+    border-left: 4px solid var(--color-accent);
+    padding: 18px 22px;
+    border-radius: 10px;
+    margin: 18px 0;
+    color: var(--color-ink-soft);
+    font-size: 15px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .calltoaction {
+    background: linear-gradient(135deg, #ffffff 0%, var(--color-surface-2) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .calltoaction::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-glow), var(--color-accent));
+  }
+  .calltoaction h3 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .calltoaction a {
+    color: var(--color-accent);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent-soft);
+    transition: border-color 0.2s ease;
+  }
+  .calltoaction a:hover { border-bottom-color: var(--color-accent); }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
   .footer {
     padding: 24px 56px;
     background: var(--color-surface);
@@ -358,178 +645,86 @@ background-color: currentColor;
     color: var(--color-muted);
     font-size: 13px;
     text-align: center;
+    letter-spacing: 0.04em;
   }
 
-  /* ---------- RESPONSIVE ---------- */
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
   @media (max-width: 720px) {
     .hero, .content, .footer { padding-left: 28px; padding-right: 28px; }
-    .hero h1 { font-size: 26px; }
+    .hero-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .hero-tagline { text-align: left; }
     ul.value-pillars { grid-template-columns: 1fr; }
     .metrics { grid-template-columns: repeat(2, 1fr); }
     .feature-card { padding: 32px 24px; }
-    .feature-card .headline { font-size: 24px; }
+    .feature-card .brand-logo { height: 64px; }
+    .feature-card .lede { font-size: 16px; }
   }
 
-  /* ---------- PRINT (TWO-PAGE VARIANT) ---------- */
-  @page {
-    size: Letter;
-    margin: 0.5in 0.55in;
-  }
+  /* ============================================================
+     PRINT (two-page)
+     ============================================================ */
+  @page { size: Letter; margin: 0.5in 0.55in; }
 
   @media print {
-    /* Force gradients/background colors to render */
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
       color-adjust: exact !important;
     }
-
     html, body {
       background: #ffffff !important;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-size: 11.5pt;
       line-height: 1.55;
     }
-
-    /* Strip outer card chrome — the printed page IS the card */
     .page {
       max-width: 100%;
       margin: 0;
       box-shadow: none !important;
       border-radius: 0 !important;
-      overflow: visible;
     }
+    /* Disable animations in print */
+    *, *::before, *::after { animation: none !important; transition: none !important; }
 
-    /* ---------- PAGE 1: HERO + PROBLEM + OPPORTUNITY + INTRODUCING ---------- */
-    .hero {
-      padding: 32px 36px 28px;
-      border-radius: 0 !important;
+    .hero { padding: 24px 36px; border-radius: 0 !important; page-break-inside: avoid; }
+    .hero-logo .logo { height: 44px; width: 124px; }
+    .hero-tagline { font-size: 10pt; }
+
+    .content { padding: 24px 36px; }
+    section + section { margin-top: 22px; }
+
+    h2 { font-size: 9.5pt; }
+    h3 { font-size: 16pt; }
+    p  { font-size: 11pt; }
+
+    section, .feature-card, .metric, .flow, ol.questions, .callout, .metrics, .calltoaction {
       page-break-inside: avoid;
       break-inside: avoid;
     }
-
-    .hero-logo { margin-bottom: 20px; }
-    .hero-logo svg { height: 48px; }
-
-    .hero h1 {
-      font-size: 24pt;
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 12pt;
-      max-width: 100%;
-      line-height: 1.5;
-    }
-
-    .content { padding: 28px 36px; }
-
-    section + section { margin-top: 26px; }
-
-    /* Headings */
-    h2 { font-size: 9.5pt; margin-bottom: 6px; }
-    h3 { font-size: 17pt; margin-bottom: 12px; line-height: 1.3; }
-
-    p {
-      font-size: 11pt;
-      margin-bottom: 10px;
-      orphans: 3;
-      widows: 3;
-    }
-
-    /* Keep blocks intact across pages */
-    section,
-    .feature-card,
-    .metric,
-    ul.how-it-works,
-    ol.questions,
-    .callout,
-    .metrics {
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-
-    /* Keep headings with their following content */
     h2, h3 { page-break-after: avoid; break-after: avoid; }
 
-    /* Featured "Introducing Averify" — last block on page 1 */
-    .feature-section { margin: 30px 0 0; }
+    .feature-section { margin: 26px 0 0; page-break-after: always; break-after: page; }
+    .feature-card { padding: 28px 32px; box-shadow: none !important; }
+    .feature-card .brand-logo { height: 70px; }
+    .feature-card .lede { font-size: 12pt; }
 
-    .feature-card {
-      padding: 30px 36px;
-      box-shadow: none !important;
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
+    .feature-followup { margin-top: 0; }
 
-    .feature-card .eyebrow { font-size: 10pt; margin-bottom: 12px; }
-    .feature-card .headline { font-size: 20pt; line-height: 1.25; }
-    .feature-card .lede { font-size: 11.5pt; margin-top: 12px; }
+    .flow { max-width: 5.4in; margin: 14px auto 6px; }
+    .flow-hub { width: 64px; height: 64px; box-shadow: none !important; }
+    .flow-step { box-shadow: none !important; }
+    .flow-step .num, .flow-step .verb { font-size: 13pt; }
+    .flow-step .desc { font-size: 10pt; }
 
-    /* ---------- PAGE BREAK: after the "Introducing" section ---------- */
-    .feature-section {
-      page-break-after: always;
-      break-after: page;
-    }
-
-    /* ---------- PAGE 2: VALUE PILLARS + HOW IT WORKS + OUTCOME ---------- */
-
-    /* Pillars move to top of page 2 as a lead-in */
-    .feature-followup {
-      margin-top: 0;
-      padding-top: 4px;
-    }
-
-    ul.value-pillars { margin-top: 16px; gap: 14px; }
-    ul.value-pillars li { padding: 16px 14px; font-size: 11.5pt; }
-    ul.value-pillars li span { font-size: 9pt; margin-bottom: 4px; }
-
-    /* How it works list — give it room to breathe */
-    ul.how-it-works {
-      padding: 18px 22px;
-      margin: 14px 0 20px;
-    }
-    ul.how-it-works li {
-      padding: 10px 8px 10px 36px;
-      font-size: 11pt;
-    }
-
-    /* Questions */
-    ol.questions li {
-      padding: 11px 14px 11px 48px;
-      font-size: 11pt;
-    }
-    ol.questions li::before {
-      width: 26px;
-      height: 26px;
-      font-size: 11pt;
-    }
-
-    /* Callouts */
-    .callout {
-      padding: 14px 18px;
-      font-size: 11pt;
-    }
-
-    /* Metrics — the closer */
-    .metrics { gap: 12px; margin: 22px 0 14px; }
-    .metric {
-      padding: 18px 12px;
-      box-shadow: none !important;
-    }
+    .metric { box-shadow: none !important; padding: 16px 10px; }
+    .metric .value { font-size: 22pt; }
     .metric .label { font-size: 9pt; }
-    .metric .value { font-size: 24pt; }
-    .metric .sub { font-size: 9.5pt; margin-top: 6px; }
+    .metric .sub { font-size: 9pt; }
 
-    /* Footer */
-    .footer {
-      padding: 16px 36px;
-      font-size: 9.5pt;
-    }
+    .calltoaction { box-shadow: none !important; padding: 18px 22px; }
 
-    /* Defensive: no link URLs printed */
     a[href]::after { content: "" !important; }
   }
 
@@ -540,14 +735,15 @@ background-color: currentColor;
 
     <!-- ===================== HERO ===================== -->
     <header class="hero">
-      <div class="hero-logo" aria-label="Averify logo">
-        <div class="logo"></div>
+      <div class="hero-inner">
+        <div class="hero-logo" aria-label="Averify">
+          <div class="logo" role="img" aria-label="Averify logo"></div>
+        </div>
+        <div class="hero-tagline">
+          Healthcare Vendor Accountability
+          <strong>Verified · Aligned · Delivered</strong>
+        </div>
       </div>
-
-      <!--
-      <h1>The Healthcare Vendor Accountability Platform</h1>
-      <p>An independent source of truth that connects the outcomes vendors deliver to the promises they made — so employers finally receive the value they paid for.</p>
-       -->
     </header>
 
     <!-- ===================== CONTENT ===================== -->
@@ -555,69 +751,126 @@ background-color: currentColor;
 
       <section>
         <h2>The Problem</h2>
-        <h3>Costs increasing at twice the rate of inflation are not the only problems in healthcare’s affordability crisis.
-        Profits are also increasing at twice the rate of costs.</h3>
-        <p>Consolidation and innovation were supposed to deliver “savings” to America’s businesses, but efficiencies have not trickled down to employers.<a href="https://www.facebook.com/RiceUniversity/posts/why-does-health-insurance-feel-so-expensivea-new-rice-university-study-found-tha/1329635289205778/">[1]</a></p>
-        <p>What prevents employers from benefiting from industry efficiencies is <em>leakage</em> — money the plan spends that it doesn’t know it shouldn't spend. Leakage comes in three forms:</p>
+        <p>The healthcare affordability crisis is deeper than the fact that costs are increasing at twice the rate of inflation. Industry profits are increasing even faster — four times as fast as inflation. The savings employers were promised from industry consolidation and innovation never trickled down to employers who can't track the leaks wasting money in their plans.</p>
+        <p>What's preventing employers from benefiting from industry efficiencies <em>is the leakage</em> — money the plan spent unnecessarily and never knew it happened. These leaks come in three forms:</p>
         <ol class="questions">
-          <li>Above-market prices the plan never saw</li>
-          <li>Low-quality care the plan never revealed</li>
-          <li>Declining member health risk the plan could not track</li>
+          <li><b>Above-market prices</b> the plan never saw</li>
+          <li><b>Low-quality care</b> the plan never revealed</li>
+          <li><b>Declining member health</b> risk the plan could not track</li>
         </ol>
-        <p>The salt in this wound is that the patchwork of siloed vendors addressing one of these three areas self-reports its savings. When they use generalized data to track what they did—and ignore what they could have done—savings are overstated, missed opportunities are not tracked, and vendors are allowed to manage to their own performance guarantees, not to the plan overall.</p>
+        <p>The salt in this wound is that the patchwork of siloed vendors addressing these three areas self-reports savings, so they tend to overstate savings and under-report missed opportunities.</p>
       </section>
 
       <section>
         <h2>The Opportunity</h2>
-        <h3>Averify solves employer healthcare with a vendor-accountability solution that tracks all three areas at once.</h3>
-   <!-- <div class="callout">
-          The low-resolution data most employers see can't surface the inconsistencies that drive up total cost. That's the gap Averify closes.
-        </div> -->
+        <h3>Averify seals the leaks, solving employer healthcare waste through vendor accountability across all three areas.</h3>
       </section>
 
-      <!-- ===================== FEATURED "INTRODUCING" SECTION ===================== -->
+      <!-- ===================== FEATURED "INTRODUCING" ===================== -->
       <section class="feature-section">
         <div class="feature-card">
           <div class="eyebrow">Introducing</div>
           <h3 class="headline">
-            <p class="brand-name">
-               <img src="data:image/svg+xml,%3Csvg viewBox%3D%220 0 387 116%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A2%3B%22%3E%3Cg id%3D%22Averify-Logo%22%3E%3Cg id%3D%22Averify%22%3E%3Cpath d%3D%22M167.637%2C47.465l0%2C34.717l-7.649%2C-0l-0%2C-5.786c-5.394%2C4.805 -10.592%2C6.864 -16.476%2C6.864c-9.807%2C0 -15.201%2C-6.57 -15.201%2C-14.318c0%2C-12.258 9.023%2C-15.887 25.302%2C-17.75l6.179%2C-0.785l-0%2C-2.844c-0%2C-8.041 -5.982%2C-10.787 -11.278%2C-10.787c-5.786%2C-0 -10.199%2C2.353 -15.005%2C6.766l-4.119%2C-5.001c5.884%2C-5.394 12.161%2C-7.846 19.516%2C-7.846c11.082%2C0 18.731%2C5.983 18.731%2C16.77Zm-31.382%2C21.183c0%2C4.707 3.433%2C8.434 9.415%2C8.434c5.001%2C0 9.022%2C-2.157 14.122%2C-6.472l-0%2C-14.711l-4.315%2C0.49c-15.005%2C1.962 -19.222%2C5.394 -19.222%2C12.259Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath d%3D%22M386.144%2C36.463c0%2C-2.886 -2.176%2C-5.15 -4.942%2C-5.15l-0.067%2C-0c-2.777%2C-0 -4.953%2C2.264 -4.953%2C5.15l-0%2C0.066c-0%2C2.895 2.176%2C5.159 4.953%2C5.159l0.067%2C0c2.766%2C0 4.942%2C-2.264 4.942%2C-5.159l0%2C-0.066Zm-1.118%2C0l-0%2C0.066c-0%2C2.237 -1.689%2C3.994 -3.824%2C3.994l-0.067%2C0c-2.146%2C0 -3.834%2C-1.757 -3.834%2C-3.994l-0%2C-0.066c-0%2C-2.228 1.688%2C-3.985 3.834%2C-3.985l0.067%2C0c2.135%2C0 3.824%2C1.757 3.824%2C3.985Zm-5.847%2C2.669l1.181%2C0l-0%2C-1.795l0.831%2C0l0.955%2C1.795l1.345%2C0l-1.099%2C-2.002c0.575%2C-0.235 0.945%2C-0.827 0.945%2C-1.494l-0%2C-0.01c-0%2C-1.127 -0.708%2C-1.757 -1.94%2C-1.757l-2.218%2C-0l0%2C5.263Zm1.191%2C-2.791l0%2C-1.429l0.893%2C-0c0.524%2C-0 0.868%2C0.282 0.868%2C0.714c-0%2C0.433 -0.324%2C0.715 -0.847%2C0.715l-0.914%2C-0Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath d%3D%22M212.847%2C31.578l-19.025%2C50.604l-7.257%2C-0l-18.928%2C-50.604l8.336%2C0l14.318%2C40.404l14.613%2C-40.404l7.943%2C0Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath d%3D%22M255.802%2C58.057l-35.796%2C-0c0.197%2C12.356 7.356%2C18.731 15.005%2C18.731c5.1%2C-0 10.101%2C-1.863 14.907%2C-8.042l5.197%2C4.806c-5.59%2C6.962 -12.258%2C9.708 -20.496%2C9.708c-12.455%2C0 -22.556%2C-9.218 -22.556%2C-26.478c-0%2C-16.476 9.414%2C-26.087 21.771%2C-26.087c16.378%2C0 21.968%2C14.613 21.968%2C27.362Zm-35.501%2C-5.688l27.361%2C-0c-0.785%2C-9.219 -5.884%2C-15.495 -13.632%2C-15.495c-7.453%2C-0 -12.847%2C6.472 -13.729%2C15.495Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath d%3D%22M288.263%2C32.363l-3.433%2C6.962c-1.569%2C-0.882 -2.746%2C-1.274 -4.903%2C-1.274c-4.413%2C-0 -9.219%2C4.02 -12.651%2C8.63l-0%2C35.501l-7.748%2C-0l0%2C-50.604l7.552%2C0l-0%2C7.846c3.334%2C-4.217 8.238%2C-8.827 14.122%2C-8.827c2.746%2C0 4.903%2C0.393 7.061%2C1.766Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath d%3D%22M300.325%2C20.79l-8.14%2C0l-0%2C-7.551l8.14%2C0l-0%2C7.551Zm-7.846%2C61.392l0%2C-50.604l7.65%2C0l-0%2C50.604l-7.65%2C-0Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3Cpath d%3D%22M371.72%2C31.578l-20.399%2C56.978c-3.04%2C8.728 -6.767%2C11.965 -16.574%2C11.965c-2.059%2C-0 -4.707%2C-0.393 -6.276%2C-0.981l0%2C-6.375c1.471%2C0.197 4.609%2C0.687 6.375%2C0.687c5.099%2C-0 7.355%2C-2.158 9.61%2C-7.944l2.354%2C-6.276l-16.868%2C-41.876l-10.297%2C0l-0%2C44.426l-7.944%2C-0l0%2C-44.426l-8.14%2C0l0%2C-6.178l8.14%2C0l0%2C-5.002c0%2C-9.316 4.707%2C-13.239 14.711%2C-13.239c2.255%2C0 4.707%2C0.294 6.374%2C0.491l0%2C6.374c-1.569%2C-0.196 -3.825%2C-0.686 -6.178%2C-0.686c-4.512%2C-0 -6.963%2C1.765 -6.963%2C7.06l-0%2C5.002l16.083%2C0l15.005%2C38.345l13.043%2C-38.345l7.944%2C0Z%22 style%3D%22fill%3A%23fff%3Bfill-rule%3Anonzero%3B%22%2F%3E%3C%2Fg%3E%3Cg id%3D%22Checkmark%22%3E%3Cpath d%3D%22M57.975%2C0.636l57.338%2C57.339l-57.338%2C57.338l-57.339%2C-57.338l57.339%2C-57.339Z%22 style%3D%22fill%3A%23404040%3B%22%2F%3E%3Cpath d%3D%22M72.468%2C43.481l-14.493%2C14.493l-14.494%2C-14.493l14.494%2C-14.494l14.493%2C14.494Z%22 style%3D%22fill%3A%2361ae24%3B%22%2F%3E%3Cpath d%3D%22M86.962%2C28.987l-14.494%2C14.494l-14.493%2C-14.494l14.493%2C-14.493l14.494%2C14.493Z%22 style%3D%22fill%3A%23d70060%3B%22%2F%3E%3Cpath d%3D%22M72.468%2C14.494l-14.493%2C14.493l-14.494%2C-14.493l14.494%2C-14.494l14.493%2C14.494Z%22 style%3D%22fill%3A%233d3d3d%3B%22%2F%3E%3Cpath d%3D%22M57.975%2C28.987l-14.494%2C14.494l-14.493%2C-14.494l14.493%2C-14.493l14.494%2C14.493Z%22 style%3D%22fill%3A%23979797%3B%22%2F%3E%3Cpath d%3D%22M43.481%2C43.481l-14.493%2C14.493l-14.494%2C-14.493l14.494%2C-14.494l14.493%2C14.494Z%22 style%3D%22fill%3A%23d3d3d3%3B%22%2F%3E%3Cpath d%3D%22M28.988%2C57.974l-14.494%2C14.494l-14.494%2C-14.494l14.494%2C-14.493l14.494%2C14.493Z%22 style%3D%22fill%3A%23113f8c%3B%22%2F%3E%3Cpath d%3D%22M43.481%2C72.468l-14.493%2C14.494l-14.494%2C-14.494l14.494%2C-14.494l14.493%2C14.494Z%22 style%3D%22fill%3A%2301a4a4%3B%22%2F%3E%3Cpath d%3D%22M57.975%2C86.962l-14.494%2C14.493l-14.493%2C-14.493l14.493%2C-14.494l14.494%2C14.494Z%22 style%3D%22fill%3A%23d0d102%3B%22%2F%3E%3Cpath d%3D%22M72.468%2C101.455l-14.493%2C14.494l-14.494%2C-14.494l14.494%2C-14.493l14.493%2C14.493Z%22 style%3D%22fill%3A%23e5461d%3B%22%2F%3E%3Cpath d%3D%22M86.962%2C86.962l-14.494%2C14.493l-14.493%2C-14.493l14.493%2C-14.494l14.494%2C14.494Z%22 style%3D%22fill%3A%23f18d05%3B%22%2F%3E%3Cpath d%3D%22M101.456%2C72.468l-14.494%2C14.494l-14.494%2C-14.494l14.494%2C-14.494l14.494%2C14.494Z%22 style%3D%22fill%3A%2332742c%3B%22%2F%3E%3Cpath d%3D%22M115.949%2C57.974l-14.493%2C14.494l-14.494%2C-14.494l14.494%2C-14.493l14.493%2C14.493Z%22 style%3D%22fill%3A%23139fec%3B%22%2F%3E%3Cpath d%3D%22M101.456%2C43.481l-14.494%2C-14.494l-28.987%2C28.987l-14.494%2C-14.493l-14.493%2C14.493l28.987%2C28.988l43.481%2C-43.481Z%22 style%3D%22fill%3A%23fff%3B%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="" />
-            </p>
-            <span>Healthcare's Vendor Accountability Solution</span>
+            <img class="brand-logo" alt="Averify"
+              src="data:image/svg+xml,%3Csvg viewBox='0 0 387 116' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cpath d='M167.637,47.465l0,34.717l-7.649,0l0,-5.786c-5.394,4.805 -10.592,6.864 -16.476,6.864c-9.807,0 -15.201,-6.57 -15.201,-14.318c0,-12.258 9.023,-15.887 25.302,-17.75l6.179,-0.785l0,-2.844c0,-8.041 -5.982,-10.787 -11.278,-10.787c-5.786,0 -10.199,2.353 -15.005,6.766l-4.119,-5.001c5.884,-5.394 12.161,-7.846 19.516,-7.846c11.082,0 18.731,5.983 18.731,16.77Zm-31.382,21.183c0,4.707 3.433,8.434 9.415,8.434c5.001,0 9.022,-2.157 14.122,-6.472l0,-14.711l-4.315,0.49c-15.005,1.962 -19.222,5.394 -19.222,12.259Z' fill='%23fff'/%3E%3Cpath d='M212.847,31.578l-19.025,50.604l-7.257,0l-18.928,-50.604l8.336,0l14.318,40.404l14.613,-40.404l7.943,0Z' fill='%23fff'/%3E%3Cpath d='M255.802,58.057l-35.796,0c0.197,12.356 7.356,18.731 15.005,18.731c5.1,0 10.101,-1.863 14.907,-8.042l5.197,4.806c-5.59,6.962 -12.258,9.708 -20.496,9.708c-12.455,0 -22.556,-9.218 -22.556,-26.478c0,-16.476 9.414,-26.087 21.771,-26.087c16.378,0 21.968,14.613 21.968,27.362Zm-35.501,-5.688l27.361,0c-0.785,-9.219 -5.884,-15.495 -13.632,-15.495c-7.453,0 -12.847,6.472 -13.729,15.495Z' fill='%23fff'/%3E%3Cpath d='M288.263,32.363l-3.433,6.962c-1.569,-0.882 -2.746,-1.274 -4.903,-1.274c-4.413,0 -9.219,4.02 -12.651,8.63l0,35.501l-7.748,0l0,-50.604l7.552,0l0,7.846c3.334,-4.217 8.238,-8.827 14.122,-8.827c2.746,0 4.903,0.393 7.061,1.766Z' fill='%23fff'/%3E%3Cpath d='M300.325,20.79l-8.14,0l0,-7.551l8.14,0l0,7.551Zm-7.846,61.392l0,-50.604l7.65,0l0,50.604l-7.65,0Z' fill='%23fff'/%3E%3Cpath d='M371.72,31.578l-20.399,56.978c-3.04,8.728 -6.767,11.965 -16.574,11.965c-2.059,0 -4.707,-0.393 -6.276,-0.981l0,-6.375c1.471,0.197 4.609,0.687 6.375,0.687c5.099,0 7.355,-2.158 9.61,-7.944l2.354,-6.276l-16.868,-41.876l-10.297,0l0,44.426l-7.944,0l0,-44.426l-8.14,0l0,-6.178l8.14,0l0,-5.002c0,-9.316 4.707,-13.239 14.711,-13.239c2.255,0 4.707,0.294 6.374,0.491l0,6.374c-1.569,-0.196 -3.825,-0.686 -6.178,-0.686c-4.512,0 -6.963,1.765 -6.963,7.06l0,5.002l16.083,0l15.005,38.345l13.043,-38.345l7.944,0Z' fill='%23fff'/%3E%3Cg%3E%3Cpath d='M57.975,0.636l57.338,57.339l-57.338,57.338l-57.339,-57.338l57.339,-57.339Z' fill='%23404040'/%3E%3Cpath d='M72.468,43.481l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z' fill='%2361ae24'/%3E%3Cpath d='M86.962,28.987l-14.494,14.494l-14.493,-14.494l14.493,-14.493l14.494,14.493Z' fill='%23d70060'/%3E%3Cpath d='M72.468,14.494l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z' fill='%233d3d3d'/%3E%3Cpath d='M57.975,28.987l-14.494,14.494l-14.493,-14.494l14.493,-14.493l14.494,14.493Z' fill='%23979797'/%3E%3Cpath d='M43.481,43.481l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z' fill='%23d3d3d3'/%3E%3Cpath d='M28.988,57.974l-14.494,14.494l-14.494,-14.494l14.494,-14.493l14.494,14.493Z' fill='%23113f8c'/%3E%3Cpath d='M43.481,72.468l-14.493,14.494l-14.494,-14.494l14.494,-14.494l14.493,14.494Z' fill='%2301a4a4'/%3E%3Cpath d='M57.975,86.962l-14.494,14.493l-14.493,-14.493l14.493,-14.494l14.494,14.494Z' fill='%23d0d102'/%3E%3Cpath d='M72.468,101.455l-14.493,14.494l-14.494,-14.494l14.494,-14.493l14.493,14.493Z' fill='%23e5461d'/%3E%3Cpath d='M86.962,86.962l-14.494,14.493l-14.493,-14.493l14.493,-14.494l14.494,14.494Z' fill='%23f18d05'/%3E%3Cpath d='M101.456,72.468l-14.494,14.494l-14.494,-14.494l14.494,-14.494l14.494,14.494Z' fill='%2332742c'/%3E%3Cpath d='M115.949,57.974l-14.493,14.494l-14.494,-14.494l14.494,-14.493l14.493,14.493Z' fill='%23139fec'/%3E%3Cpath d='M101.456,43.481l-14.494,-14.494l-28.987,28.987l-14.494,-14.493l-14.493,14.493l28.987,28.988l43.481,-43.481Z' fill='%23fff'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"
+            />
           </h3>
-
-          <p class="lede">At Averify, we don’t deliver healthcare; we make sure healthcare delivers.</p>
+            <div class="subhead">Healthcare's Vendor Accountability Solution</div>
+          <p class="lede">"At Averify, we don't deliver healthcare — we make sure healthcare delivers."</p>
         </div>
 
         <div class="feature-followup">
-          <p>We use high-resolution data to surface inconsistencies that cause the price, quality, and risk leaks that waste money.
-          As the single source of truth on vendor performance, Averify independently connects individual siloed outcomes to overall performance to:</p>
+          <p>We use high-resolution data to surface the inconsistencies that cause the price, quality, and risk leaks wasting plan dollars. As the single source of truth on vendor performance, Averify independently connects siloed outcomes to overall plan performance to:</p>
           <ul class="value-pillars">
             <li><span>Verify</span>Savings Achieved</li>
             <li><span>Uncover</span>Opportunities Missed</li>
             <li><span>Pre-Validate</span>Vendor Solutions</li>
           </ul>
+        </div>
+      </section>
+
+      <!-- ===================== HOW IT WORKS — CIRCULAR FLOW ===================== -->
+      <section>
+        <h2>How It Works</h2>
+        <h3>One small fixed PEPM fee. A continuous loop of accountability.</h3>
+        <p>Averify identifies customer-specific leaks, attributes savings and missed opportunities to pre-validated strategies, aligns vendors to the plan's needs (not just their siloed performance guarantees), and monitors ongoing performance to track each vendor's ROI.</p>
+
+        <div class="flow" role="img" aria-label="Averify's continuous four-step accountability loop: Indexing, Attributing, Aligning, Monitoring">
+
+          <svg class="flow-orbit" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs>
+              <linearGradient id="arcGradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"  stop-color="#1f6feb" stop-opacity="0.0"/>
+                <stop offset="50%" stop-color="#1f6feb" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#b8d0ff" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Animated dashed ring -->
+            <circle class="ring" cx="50" cy="50" r="36" />
+
+            <!-- Four short directional connector arcs (clockwise) between steps -->
+            <!-- top → right -->
+            <path class="connector" d="M 64 18 A 36 36 0 0 1 82 36" />
+            <!-- right → bottom -->
+            <path class="connector" d="M 82 64 A 36 36 0 0 1 64 82" />
+            <!-- bottom → left -->
+            <path class="connector" d="M 36 82 A 36 36 0 0 1 18 64" />
+            <!-- left → top -->
+            <path class="connector" d="M 18 36 A 36 36 0 0 1 36 18" />
+
+            <!-- Subtle highlight arc that sweeps the top -->
+            <path class="arc" d="M 18 36 A 36 36 0 0 1 82 36" />
+          </svg>
+
+          <!-- Central hub -->
+          <div class="flow-hub" aria-hidden="true">
+            <svg viewBox="0 0 116 116" xmlns="http://www.w3.org/2000/svg">
+              <path d="M57.975,0.636l57.338,57.339l-57.338,57.338l-57.339,-57.338l57.339,-57.339Z" fill="#404040"/>
+              <path d="M72.468,43.481l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z" fill="#61ae24"/>
+              <path d="M86.962,28.987l-14.494,14.494l-14.493,-14.494l14.493,-14.493l14.494,14.493Z" fill="#d70060"/>
+              <path d="M72.468,14.494l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z" fill="#3d3d3d"/>
+              <path d="M57.975,28.987l-14.494,14.494l-14.493,-14.494l14.493,-14.493l14.494,14.493Z" fill="#979797"/>
+              <path d="M43.481,43.481l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z" fill="#d3d3d3"/>
+              <path d="M28.988,57.974l-14.494,14.494l-14.494,-14.494l14.494,-14.493l14.494,14.493Z" fill="#113f8c"/>
+              <path d="M43.481,72.468l-14.493,14.494l-14.494,-14.494l14.494,-14.494l14.493,14.494Z" fill="#01a4a4"/>
+              <path d="M57.975,86.962l-14.494,14.493l-14.493,-14.493l14.493,-14.494l14.494,14.494Z" fill="#d0d102"/>
+              <path d="M72.468,101.455l-14.493,14.494l-14.494,-14.494l14.494,-14.493l14.493,14.493Z" fill="#e5461d"/>
+              <path d="M86.962,86.962l-14.494,14.493l-14.493,-14.493l14.493,-14.494l14.494,14.494Z" fill="#f18d05"/>
+              <path d="M101.456,72.468l-14.494,14.494l-14.494,-14.494l14.494,-14.494l14.494,14.494Z" fill="#32742c"/>
+              <path d="M115.949,57.974l-14.493,14.494l-14.494,-14.494l14.494,-14.493l14.493,14.493Z" fill="#139fec"/>
+              <path d="M101.456,43.481l-14.494,-14.494l-28.987,28.987l-14.494,-14.493l-14.493,14.493l28.987,28.988l43.481,-43.481Z" fill="#fff"/>
+            </svg>
+          </div>
+
+          <div class="flow-step step-1">
+            <div class="head"><span class="num">1.</span><span class="verb">Indexing</span></div>
+            <div class="desc">to reveal the cost of inconsistency</div>
+          </div>
+
+          <div class="flow-step step-2">
+            <div class="head"><span class="num">2.</span><span class="verb">Attributing</span></div>
+            <div class="desc">savings &amp; missed opportunities to pre-validated savings strategy</div>
+          </div>
+
+          <div class="flow-step step-3">
+            <div class="head"><span class="num">3.</span><span class="verb">Aligning</span></div>
+            <div class="desc">vendors for optimal plan performance</div>
+          </div>
+
+          <div class="flow-step step-4">
+            <div class="head"><span class="num">4.</span><span class="verb">Monitoring</span></div>
+            <div class="desc">plan performance to track vendor ROI</div>
+          </div>
 
         </div>
       </section>
 
-      <section>
-        <h2>How It Works</h2>
-        <h3>One small fixed PEPM fee. Four accountability functions.</h3>
-        <ul class="how-it-works">
-          <li><strong>Indexes costs</strong> to identify performance variability.</li>
-          <li><strong>Attributes savings and missed opportunities</strong> to pre-validated solutions.</li>
-          <li><strong>Aligns vendors</strong> collaboratively to optimize plan performance.</li>
-          <li><strong>Monitors actions</strong> to measure the value actually delivered.</li>
-        </ul>
-      </section>
-
-      <p>The result is a simple but comprehensive process that ensures all vendors are aligned and accountable to their role in achieving the financial objectives of the plan as a whole.</p>
-
-
+      <!-- ===================== OUTCOME ===================== -->
       <section>
         <h2>The Outcome</h2>
-        <h3>Best of all, the C-Suite can manage the plan off a single page reporting whether the plan:</h3>
+        <p>The result is a simple but comprehensive process that ensures all vendors are aligned and accountable to their role in achieving the financial objectives of the plan as a whole.</p>
+        <h3>Best of all, the C-Suite can manage the plan with a single page:</h3>
 
         <div class="metrics">
           <div class="metric">
@@ -635,14 +888,23 @@ background-color: currentColor;
             <div class="value positive">−3.2</div>
             <div class="sub">points improved</div>
           </div>
-          <div class="metric">
+          <div class="metric warn">
             <div class="label">Excess Cost Remaining</div>
             <div class="value warning">$22.9M</div>
             <div class="sub">opportunity ahead</div>
           </div>
         </div>
 
-        <p>When Averify is engaged, costs drop, ERISA "best interest" exposure is avoided, and each vendor's ROI is independently validated.</p>
+        <div class="callout">
+          When Averify is engaged, costs drop, ERISA "best interest" exposure becomes avoidable, and each vendor's ROI is independently validated.
+        </div>
+      </section>
+
+      <!-- ===================== CALL TO ACTION ===================== -->
+      <section class="calltoaction">
+        <h3>Ready to see what's hiding in your plan's data?<br>
+        Reach out at <a href="mailto:solutions@averify.com">solutions@averify.com</a> for a demo.<br>
+        <em style="color: var(--color-muted); font-weight: 500; font-size: 15px;">We don't deliver healthcare — we make sure healthcare delivers.</em></h3>
       </section>
 
     </main>
