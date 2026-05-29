@@ -733,6 +733,7 @@
     border-radius: 18px;
 
     text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.25s ease;
 
     overflow: hidden;
     border: 0.5px solid transparent;
@@ -743,8 +744,9 @@
       linear-gradient(135deg, #ffffff 0%, var(--color-surface) 100%),
       linear-gradient(90deg, rgba(12, 133, 88, 0.6), var(--color-glow), rgba(202, 65, 12, 0.6))
       ;
-    box-shadow: -2px -1px 20px rgba(12, 133, 88, 0.3),
-                 6px -1px 16px rgba(202, 65, 12, 0.1),
+    box-shadow: -4px -2px 16px rgba(12, 133, 88, 0.3),
+                -4px -2px 16px rgba(255, 255, 255, 0.1),
+                 4px -2px 16px rgba(202, 65, 12, 0.3),
                  0 1px 2px rgba(15, 30, 61, 0.06);
   }
 
@@ -762,13 +764,36 @@
     content: "";
     position: absolute;
     top: -2px; right: 0;
-    z-index: 6;
+    z-index: 0;
     height: 3px;
     width: 50%;
-    background: linear-gradient(90deg, var(--color-warning-glow), var(--color-warning-deep));
+
   }
 
+  .savings-summary:hover {
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.01);
+    box-shadow:  0 16px 40px var(--color-flow-glow), var(--shadow-md);
+  }
+
+  .savings-summary:has(.savings-summary-item.positive:hover) {
+    transform: translate(-3px,-2px) scale(1.01);
+    box-shadow: -6px -4px 16px rgba(12, 133, 88, 0.3),
+                -4px -4px 16px rgba(255, 255, 255, 0.1),
+                 0 16px 40px var(--color-success-glow),
+                 0 1px 2px rgba(15, 30, 61, 0.06);
+  }
+
+  .savings-summary:has(.savings-summary-item.warning:hover) {
+    transform: translate(3px,2px) scale(1.01);
+    box-shadow:  6px -4px 16px rgba(202, 65, 12, 0.3),
+                 4px -4px 16px rgba(255, 255, 255, 0.1),
+                 0 16px 40px var(--color-warning-glow),
+                 0 1px 2px rgba(15, 30, 61, 0.06);
+  }
+
+
   .savings-summary-item { text-align: center; }
+
   .ss-label {
     font-size: 12px;
     text-transform: uppercase;
@@ -777,12 +802,21 @@
     font-weight: 700;
     margin-bottom: 6px;
   }
+
   .ss-value {
-    font-size: 38px;
+    font-size: 44px;
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.02em;
   }
+
+  .ss-number {
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    min-width: 2.6ch;
+    text-align: center;
+  }
+
   .savings-summary-item.positive .ss-value { color: var(--color-success); }
   .savings-summary-item.warning .ss-value { color: var(--color-warning); }
 
@@ -798,7 +832,7 @@
 
   .exec-showcase {
     position: relative;
-    height: 360vh;
+    height: 660vh;
     margin: 40px 0;
     /* This element's own scroll position drives the timeline.
        Using view-timeline on the parent of the sticky element is the
@@ -818,27 +852,53 @@
     border-radius: var(--radius-lg);
   }
 
+  @keyframes stageDrift {
+    0%   { transform: translateY(8vh)
+                       rotateY(calc(var(--mx, 0) * 6deg))
+                       rotateX(calc(var(--my, 0) * -6deg)); }
+    100% { transform: translateY(-8vh)
+                       rotateY(calc(var(--mx, 0) * 6deg))
+                       rotateX(calc(var(--my, 0) * -6deg)); }
+  }
+
   .exec-stage-inner {
     position: relative;
     width: 100%;
     height: 100%;
     perspective: 1600px;
     transform-style: preserve-3d;
-    transform:
-      rotateY(calc(var(--mx, 0) * 4deg))
-      rotateX(calc(var(--my, 0) * -4deg));
-    transition: transform 180ms ease-out;
+    isolation: isolate;
+    transition: transform 220ms ease-out;
+
+    /* Scroll-driven drift */
+    animation-name: stageDrift;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: --exec-scroll;
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes captionDrift {
+    0%   { transform: translate(-50%, calc(-50% + 4vh)) translateZ(-50px); }
+    100% { transform: translate(-50%, calc(-50% - 4vh)) translateZ(-50px); }
   }
 
   .exec-caption {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(-50px);
     text-align: center;
-    z-index: 1;
+    z-index: 0;
     pointer-events: none;
     color: var(--color-ink-soft);
+    animation-name: captionDrift;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: --exec-scroll;
+    animation-range: cover 0% cover 100%;
   }
   .exec-caption-eyebrow {
     display: block;
@@ -861,7 +921,7 @@
     line-height: 1.3;
   }
 
-  /* Define the keyframes ONCE, outside any feature query */
+  /* V1
   @keyframes panelFlyIn {
     from {
       opacity: 0;
@@ -878,16 +938,42 @@
         scale(1);
     }
   }
+  */
+
+  @keyframes panelFlyIn {
+    0% {
+      opacity: 0;
+      transform:
+        translate3d(var(--from-x), var(--from-y), -200px)
+        rotate(var(--from-rot, 0deg))
+        scale(2.6);
+    }
+    70% {
+      opacity: 1;
+      transform:
+        translate3d(0, 0, 60px)
+        rotate(calc(var(--rest-rot, 0deg) * 1.3))
+        scale(0.99);
+    }
+    100% {
+      opacity: 1;
+      transform:
+        translate3d(0, 0, 0)
+        rotate(var(--rest-rot, 0deg))
+        scale(1);
+    }
+  }
 
   .exec-panel {
     position: absolute;
     background: #ffffff;
-    border: 1px solid var(--color-border);
-    border-radius: 14px;
+    border: 1px solid var(#000);
+    border-radius: 12px;
     overflow: hidden;
     transform-style: preserve-3d;
     will-change: transform, opacity;
     opacity: 0;
+   z-index: 10;
 
     animation-name: panelFlyIn;
     animation-duration: 1ms;
@@ -901,47 +987,54 @@
     display: block;
     width: 100%;
     height: auto;
+    pointer-events: none;
   }
 
-  /* Each panel gets its own slice of the view progress */
-  .panel-favunfav   { animation-range: cover 10%  cover 35%; }
-  .panel-percentile { animation-range: cover 25%  cover 50%; }
-  .panel-pathways   { animation-range: cover 40%  cover 65%; }
-  .panel-outliers   { animation-range: cover 55%  cover 80%; }
+/* Each panel gets its own slice of the view progress — sequenced 1→4 */
+.panel-percentile { animation-range: cover 10% cover 35%; }
+.panel-pathways   { animation-range: cover 28% cover 53%; }
+.panel-outliers   { animation-range: cover 46% cover 71%; }
+.panel-favunfav   { animation-range: cover 64% cover 89%; }
 
   /* Resting positions */
-  .panel-favunfav {
-    top: 18%;
-    left: 4%;
-    width: 50%;
-    z-index: 3;
-    box-shadow: 0 28px 60px rgba(15, 30, 61, 0.22);
-  }
+
   .panel-percentile {
-    top: 20%;
-    right: 4%;
-    width: 46%;
-    z-index: 4;
+    top: 12%;
+    left: 1%;
+    width: 68%;
+    z-index: 11;
     box-shadow: 0 24px 50px rgba(15, 30, 61, 0.24);
   }
+
   .panel-pathways {
-    top: 56%;
-    right: 6%;
-    width: 54%;
-    z-index: 2;
+    top: 25%;
+    right: 2%;
+    width: 65%;
+    z-index: 12;
     box-shadow: 0 18px 40px rgba(15, 30, 61, 0.18);
   }
+
   .panel-outliers {
-    top: 60%;
-    left: 8%;
-    width: 38%;
-    z-index: 5;
+    top: 64%;
+    right: -3%;
+    width: 67%;
+    z-index: 13;
     box-shadow: 0 32px 65px rgba(15, 30, 61, 0.28);
   }
 
+  .panel-favunfav {
+    top: 71%;
+    left: 3%;
+    width: 72%;
+    z-index: 14;
+    box-shadow: 0 28px 60px rgba(15, 30, 61, 0.22);
+  }
+
   .exec-panel:hover {
-    z-index: 20;
-    box-shadow: 0 36px 70px rgba(15, 30, 61, 0.32);
+    /* No z-index change — that was causing repaint cascades */
+    box-shadow: 0 36px 70px rgba(15, 30, 61, 0.25);
+    /* filter: brightness(1.04); */
+    transition: box-shadow 0.5s ease;
   }
 
   /* Fallback for browsers WITHOUT scroll-driven animation */
@@ -1004,7 +1097,6 @@
       animation: none !important;
       opacity: 1 !important;
       box-shadow: none !important;
-      border: 1px solid var(--color-border);
       page-break-inside: avoid;
     }
   }
@@ -1024,21 +1116,22 @@
   }
 
   .call-to-action {
-    background: linear-gradient(135deg, #ffffff 0%, var(--color-surface-2) 100%);
-    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 28px 32px;
     text-align: center;
-    box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
-  }
-  .call-to-action::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-accent), var(--color-glow), var(--color-accent));
+    border: 0.5px solid transparent;
+    border-top-width: 5px;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image:
+      linear-gradient(135deg, #ffffff 0%, var(--color-surface) 100%),
+      linear-gradient(90deg, var(--color-ink-deep), var(--color-glow), var(--color-ink-deep))
+      ;
+    box-shadow: 0px  2px 12px var(--color-glow),
+                var(--shadow-sm);
+    transition: transform 0.5s ease, box-shadow 0.5s ease, background-image 0.25s ease;
   }
   .call-to-action h3 {
     margin: 0;
@@ -1055,6 +1148,11 @@
     transition: border-color 0.2s ease;
   }
   .call-to-action a:hover { border-bottom-color: var(--color-accent); }
+
+  .call-to-action:hover {
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.01);
+    box-shadow:  0 12px 24px var(--color-glow), var(--shadow-md);
+  }
 
   /* ============================================================
      FOOTER
@@ -1191,11 +1289,11 @@
       <section class="feature-section">
         <div class="feature-card">
           <div class="eyebrow">Introducing</div>
-          <h3 class="headline">
+          <div class="headline">
             <img class="brand-logo" alt="Averify"
               src="data:image/svg+xml,%3Csvg viewBox='0 0 387 116' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cpath d='M167.637,47.465l0,34.717l-7.649,0l0,-5.786c-5.394,4.805 -10.592,6.864 -16.476,6.864c-9.807,0 -15.201,-6.57 -15.201,-14.318c0,-12.258 9.023,-15.887 25.302,-17.75l6.179,-0.785l0,-2.844c0,-8.041 -5.982,-10.787 -11.278,-10.787c-5.786,0 -10.199,2.353 -15.005,6.766l-4.119,-5.001c5.884,-5.394 12.161,-7.846 19.516,-7.846c11.082,0 18.731,5.983 18.731,16.77Zm-31.382,21.183c0,4.707 3.433,8.434 9.415,8.434c5.001,0 9.022,-2.157 14.122,-6.472l0,-14.711l-4.315,0.49c-15.005,1.962 -19.222,5.394 -19.222,12.259Z' fill='%23fff'/%3E%3Cpath d='M212.847,31.578l-19.025,50.604l-7.257,0l-18.928,-50.604l8.336,0l14.318,40.404l14.613,-40.404l7.943,0Z' fill='%23fff'/%3E%3Cpath d='M255.802,58.057l-35.796,0c0.197,12.356 7.356,18.731 15.005,18.731c5.1,0 10.101,-1.863 14.907,-8.042l5.197,4.806c-5.59,6.962 -12.258,9.708 -20.496,9.708c-12.455,0 -22.556,-9.218 -22.556,-26.478c0,-16.476 9.414,-26.087 21.771,-26.087c16.378,0 21.968,14.613 21.968,27.362Zm-35.501,-5.688l27.361,0c-0.785,-9.219 -5.884,-15.495 -13.632,-15.495c-7.453,0 -12.847,6.472 -13.729,15.495Z' fill='%23fff'/%3E%3Cpath d='M288.263,32.363l-3.433,6.962c-1.569,-0.882 -2.746,-1.274 -4.903,-1.274c-4.413,0 -9.219,4.02 -12.651,8.63l0,35.501l-7.748,0l0,-50.604l7.552,0l0,7.846c3.334,-4.217 8.238,-8.827 14.122,-8.827c2.746,0 4.903,0.393 7.061,1.766Z' fill='%23fff'/%3E%3Cpath d='M300.325,20.79l-8.14,0l0,-7.551l8.14,0l0,7.551Zm-7.846,61.392l0,-50.604l7.65,0l0,50.604l-7.65,0Z' fill='%23fff'/%3E%3Cpath d='M371.72,31.578l-20.399,56.978c-3.04,8.728 -6.767,11.965 -16.574,11.965c-2.059,0 -4.707,-0.393 -6.276,-0.981l0,-6.375c1.471,0.197 4.609,0.687 6.375,0.687c5.099,0 7.355,-2.158 9.61,-7.944l2.354,-6.276l-16.868,-41.876l-10.297,0l0,44.426l-7.944,0l0,-44.426l-8.14,0l0,-6.178l8.14,0l0,-5.002c0,-9.316 4.707,-13.239 14.711,-13.239c2.255,0 4.707,0.294 6.374,0.491l0,6.374c-1.569,-0.196 -3.825,-0.686 -6.178,-0.686c-4.512,0 -6.963,1.765 -6.963,7.06l0,5.002l16.083,0l15.005,38.345l13.043,-38.345l7.944,0Z' fill='%23fff'/%3E%3Cg%3E%3Cpath d='M57.975,0.636l57.338,57.339l-57.338,57.338l-57.339,-57.338l57.339,-57.339Z' fill='%23404040'/%3E%3Cpath d='M72.468,43.481l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z' fill='%2361ae24'/%3E%3Cpath d='M86.962,28.987l-14.494,14.494l-14.493,-14.494l14.493,-14.493l14.494,14.493Z' fill='%23d70060'/%3E%3Cpath d='M72.468,14.494l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z' fill='%233d3d3d'/%3E%3Cpath d='M57.975,28.987l-14.494,14.494l-14.493,-14.494l14.493,-14.493l14.494,14.493Z' fill='%23979797'/%3E%3Cpath d='M43.481,43.481l-14.493,14.493l-14.494,-14.493l14.494,-14.494l14.493,14.494Z' fill='%23d3d3d3'/%3E%3Cpath d='M28.988,57.974l-14.494,14.494l-14.494,-14.494l14.494,-14.493l14.494,14.493Z' fill='%23113f8c'/%3E%3Cpath d='M43.481,72.468l-14.493,14.494l-14.494,-14.494l14.494,-14.494l14.493,14.494Z' fill='%2301a4a4'/%3E%3Cpath d='M57.975,86.962l-14.494,14.493l-14.493,-14.493l14.493,-14.494l14.494,14.494Z' fill='%23d0d102'/%3E%3Cpath d='M72.468,101.455l-14.493,14.494l-14.494,-14.494l14.494,-14.493l14.493,14.493Z' fill='%23e5461d'/%3E%3Cpath d='M86.962,86.962l-14.494,14.493l-14.493,-14.493l14.493,-14.494l14.494,14.494Z' fill='%23f18d05'/%3E%3Cpath d='M101.456,72.468l-14.494,14.494l-14.494,-14.494l14.494,-14.494l14.494,14.494Z' fill='%2332742c'/%3E%3Cpath d='M115.949,57.974l-14.493,14.494l-14.494,-14.494l14.494,-14.493l14.493,14.493Z' fill='%23139fec'/%3E%3Cpath d='M101.456,43.481l-14.494,-14.494l-28.987,28.987l-14.494,-14.493l-14.493,14.493l28.987,28.988l43.481,-43.481Z' fill='%23fff'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"
             />
-          </h3>
+          </div>
             <div class="subhead">Healthcare's Vendor Accountability Solution</div>
           <p class="lede">"At Averify, we don't deliver healthcare — we make sure healthcare delivers."</p>
         </div>
@@ -1317,15 +1415,19 @@
         </ul>
 
         <!-- Floating savings + opportunity summary -->
-        <div class="savings-summary">
+         <div class="savings-summary">
           <div class="savings-summary-item positive">
             <div class="ss-label">Total Savings Achieved</div>
-            <div class="ss-value">$41.1M</div>
+            <div class="ss-value">
+              <span class="ss-prefix">$</span><span class="ss-number" data-target="41.1">41.1</span><span class="ss-suffix">M</span>
+            </div>
           </div>
           <div class="savings-summary-divider" aria-hidden="true"></div>
           <div class="savings-summary-item warning">
             <div class="ss-label">Ongoing Opportunity to Capture</div>
-            <div class="ss-value">$22.9M</div>
+            <div class="ss-value">
+              <span class="ss-prefix">$</span><span class="ss-number" data-target="22.9">22.9</span><span class="ss-suffix">M</span>
+            </div>
           </div>
         </div>
       </section>
@@ -1339,25 +1441,30 @@
               <span class="exec-caption-title">The Averify Executive Performance Review</span>
             </div>
 
-            <div class="exec-panel panel-favunfav"
-                 style="--from-x: -120vw; --from-y: -10vh; --from-rot: -18deg; --rest-rot: -1.4deg; --depth: 1; --start: 0; --end: 0.25;">
-              <img src="demo_exec_fav_unf_split.svg" alt="Favorable versus unfavorable provider split, $40.1M below market and $22.9M above market" />
-            </div>
+              <!-- Panel 1: arrives first, sits behind everything -->
+              <div class="exec-panel panel-percentile"
+                   style="--from-x: -130vw; --from-y: -58vh; --from-rot: 22deg; --rest-rot: 0deg;">
+                <img src="demo_exec_percentile_plot.svg" alt="Variability Cost Index percentile plot showing 2025 YTD versus market rate" />
+              </div>
 
-            <div class="exec-panel panel-percentile"
-                 style="--from-x: 130vw; --from-y: -8vh; --from-rot: 22deg; --rest-rot: 1.8deg; --depth: 0.85; --start: 0.18; --end: 0.43;">
-              <img src="demo_exec_percentile_plot.svg" alt="Variability Cost Index percentile plot showing 2025 YTD versus market rate" />
-            </div>
+              <!-- Panel 2 -->
+              <div class="exec-panel panel-pathways"
+                   style="--from-x: 110vw; --from-y: -10vh; --from-rot: -14deg; --rest-rot: -0.2deg;">
+                <img src="demo_exec_care_pathways.svg" alt="Care pathways breakdown across circulatory, neoplasms, musculoskeletal, mental & behavioral, and endocrine categories" />
+              </div>
 
-            <div class="exec-panel panel-pathways"
-                 style="--from-x: 110vw; --from-y: 50vh; --from-rot: -14deg; --rest-rot: -0.9deg; --depth: 0.65; --start: 0.36; --end: 0.61;">
-              <img src="demo_exec_care_pathways.svg" alt="Care pathways breakdown across circulatory, neoplasms, musculoskeletal, mental & behavioral, and endocrine categories" />
-            </div>
+              <!-- Panel 3 -->
+              <div class="exec-panel panel-outliers"
+                   style="--from-x: 130vw; --from-y: 55vh; --from-rot: 16deg; --rest-rot: 0.4deg;">
+                <img src="demo_exec_outlier_claimants.svg" alt="Outlier claimants summary, 258 claimants with $54.4M paid" />
+              </div>
 
-            <div class="exec-panel panel-outliers"
-                 style="--from-x: -110vw; --from-y: 55vh; --from-rot: 16deg; --rest-rot: 1.2deg; --depth: 1.15; --start: 0.54; --end: 0.79;">
-              <img src="demo_exec_outlier_claimants.svg" alt="Outlier claimants summary, 258 claimants with $54.4M paid" />
-            </div>
+              <!-- Panel 4: arrives last, sits on top -->
+              <div class="exec-panel panel-favunfav"
+                   style="--from-x: -120vw; --from-y: 50vh; --from-rot: -18deg; --rest-rot: -0.1deg;">
+                <img src="demo_exec_fav_unf_split.svg" alt="Favorable versus unfavorable provider split, $40.1M below market and $22.9M above market" />
+              </div>
+
           </div>
         </div>
       </section>
@@ -1384,11 +1491,8 @@
 
   </div>
 
-
 <script>
-  // Mouse-move parallax for the exec showcase stage.
-  // Sets CSS custom properties --mx and --my (range -1 to 1) on the stage,
-  // which the CSS uses to tilt the scene in 3D.
+  // ---------- Mouse-move parallax for the exec showcase ----------
   (function() {
     const stage = document.getElementById('execStage');
     if (!stage) return;
@@ -1403,14 +1507,12 @@
       const rect = stage.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
-      // Normalize to -1..1 across a generous radius (whole viewport)
       targetX = Math.max(-1, Math.min(1, (e.clientX - cx) / (window.innerWidth / 2)));
       targetY = Math.max(-1, Math.min(1, (e.clientY - cy) / (window.innerHeight / 2)));
       if (!rafId) rafId = requestAnimationFrame(tick);
     }
 
     function tick() {
-      // Easing toward target for smoothness
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
       stage.style.setProperty('--mx', currentX.toFixed(3));
@@ -1423,6 +1525,57 @@
     }
 
     window.addEventListener('mousemove', onMove, { passive: true });
+  })();
+
+  // ---------- Number count-up when savings summary scrolls into view ----------
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const numbers = document.querySelectorAll('.ss-number');
+    if (!numbers.length) return;
+
+    // Easing function: starts fast, slows down at the end (feels like a slot machine settling)
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function animateNumber(el) {
+      const target = parseFloat(el.dataset.target);
+      const duration = 1600; // milliseconds
+      const start = performance.now();
+
+      // Set initial state
+      el.textContent = '0.0';
+
+      function frame(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(progress);
+        const value = (target * eased).toFixed(1);
+        el.textContent = value;
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          el.textContent = target.toFixed(1); // ensure exact final value
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // Use IntersectionObserver to fire when the savings summary is ~halfway visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Find both numbers within the visible savings summary and animate them with a stagger
+          const summaryNumbers = entry.target.querySelectorAll('.ss-number');
+          summaryNumbers.forEach((n, i) => {
+            setTimeout(() => animateNumber(n), i * 200); // 200ms stagger between the two
+          });
+          observer.unobserve(entry.target); // run only once
+        }
+      });
+    }, { threshold: 0.5 }); // fire when 50% of the summary is in view
+
+    const summary = document.querySelector('.savings-summary');
+    if (summary) observer.observe(summary);
   })();
 </script>
 </body>
