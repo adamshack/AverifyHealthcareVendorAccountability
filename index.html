@@ -9,6 +9,8 @@
     --color-bg: #ffffff;
     --color-surface: #f7f9fc;
     --color-surface-2: #eef3fb;
+    --color-acrylic-1: rgba(245, 245, 245, 0.99);
+    --color-acrylic-2: rgba(255, 255, 255, 0.95);
     --color-ink: #0f1e3d;
     --color-ink-soft: #3a4a6b;
     --color-muted: #6b7a99;
@@ -16,14 +18,23 @@
     --color-accent-soft: #6ea8ff;
     --color-accent-dark: #0a4bb8;
     --color-glow: #b8d0ff;
-    --color-success: #0f9d6e;
-    --color-warning: #e5461d;        /* aligned with the logo's orange tile */
-    --color-warning-deep: #c2410c;
+    --color-success: rgba(15, 157, 110, 1);
+    --color-success-deep: rgba(12, 133, 88, 0.8);
+    --color-success-shdw: rgba(9, 112, 68, 0.18);
+    --color-success-glow: rgba(12, 133, 88, 0.14);
+    --color-warning: rgba(229, 70, 29, 1);
+    --color-warning-deep: rgba(202, 65, 12, 0.8);
+    --color-warning-shdw: rgba(163, 54, 12, 0.18);
+    --color-warning-glow: rgba(202, 65, 12, 0.14);
+    --color-flow: rgba(229, 70, 29, 1);
+    --color-flow-deep: rgba(202, 65, 12, 0.8);
+    --color-flow-dark: rgba(163, 54, 12, 0.75);
+    --color-flow-glow: rgba(202, 65, 12, 0.14);
     --color-border: #e2e8f0;
     --radius: 12px;
     --radius-lg: 18px;
     --shadow-sm: 0 1px 2px rgba(15, 30, 61, 0.06);
-    --shadow-md: 0 6px 20px rgba(15, 30, 61, 0.08);
+    --shadow-md: 0 6px 20px rgba(15, 30, 61, 0.12);
     --shadow-lg: 0 16px 40px rgba(15, 30, 61, 0.18);
     --shadow-glow: 0 0 0 6px rgba(31, 111, 235, 0.08), 0 18px 40px rgba(31, 111, 235, 0.18);
   }
@@ -239,13 +250,27 @@
     overflow: hidden;
   }
 
-  /* Soft "shimmer" line across the top */
-  .feature-card::before {
+  .feature-card::before,
+  .feature-card::after {
     content: "";
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    pointer-events: none;
+  }
+
+  .feature-card::before {
+    width: 220px;
+    height: 220px;
+    top: -90px;
+    right: -70px;
+  }
+
+  .feature-card::after {
+    width: 160px;
+    height: 160px;
+    bottom: -70px;
+    left: -50px;
   }
 
   .feature-card .eyebrow {
@@ -338,7 +363,7 @@
   .flow {
     position: relative;
     width: 100%;
-    max-width: 640px;
+    max-width: 660px;
     margin: 36px auto 16px;
     aspect-ratio: 1 / 1;
   }
@@ -423,9 +448,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 96px;
-    height: 96px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 114px;
+    height: 114px;
     z-index: 3;
     display: flex;
     align-items: center;
@@ -446,41 +471,49 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+    transform: rotate(-45deg);
     filter: drop-shadow(0 3px 6px rgba(15, 30, 61, 0.15));
   }
 
   /* Each step is a polished card placed around the dial */
   .flow-step {
     position: absolute;
-    width: 32%;
+    width: 34%;
     z-index: 2;
-    padding: 14px 16px;
-    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
-    border: 1px solid var(--color-border);
+    padding: 30px 22px;
     border-radius: 14px;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.25s ease;
+
+    /* 1. Create a transparent border width framework */
+    border: 1px solid transparent;
+    border-top-width: 5px; /* Adjust this to change your thick edge height */
+
+    /* 2. Double Background: Opaque content area resting on your gradient */
+    background-image:
+      linear-gradient(115deg, var(--color-acrylic-1) 0%, var(--color-acrylic-2) 100%),
+      linear-gradient(90deg, var(--color-flow-dark), var(--color-flow-deep));
+
+    /* 3. The magic clipping alignment to generate the outer border perfectly */
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+
+    /* 4. Ambient, subtle outer glow */
+    box-shadow: 0px 6px 16px var(--color-flow-glow), var(--shadow-md);
   }
 
   .flow-step:hover {
     transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.03);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .flow-step::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 14px; right: 14px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--color-warning), #f18d05);
-    border-radius: 2px;
+    box-shadow:  0 16px 40px var(--color-flow-glow), var(--shadow-lg);
   }
 
   .flow-step .head {
     display: flex;
     align-items: baseline;
-    gap: 6px;
-    margin-bottom: 4px;
+    gap: 5px;
+    margin-bottom: 6px;
   }
 
   .flow-step .num {
@@ -494,7 +527,7 @@
     font-size: 20px;
     font-weight: 800;
     color: var(--color-warning);
-    line-height: 1.1;
+    line-height: 1.2;
     letter-spacing: -0.01em;
   }
 
@@ -502,7 +535,7 @@
     color: var(--color-ink);
     font-size: 14px;
     font-weight: 500;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   /* Quadrant placement — using custom props so :hover transform is preserved */
@@ -531,62 +564,93 @@
     }
   }
 
-  /* ============================================================
-     METRICS (the outcome closer)
-     ============================================================ */
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin: 26px 0 18px;
-  }
-  .metric {
-    position: relative;
-    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 22px 16px 20px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .metric:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  .metric::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-success), #4dd1a1);
-  }
-  .metric.warn::before {
-    background: linear-gradient(90deg, var(--color-warning), #f18d05);
-  }
-  .metric .label {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    margin-bottom: 10px;
-    font-weight: 700;
-  }
-  .metric .value {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--color-ink);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-  .metric .value.positive { color: var(--color-success); }
-  .metric .value.warning  { color: var(--color-warning); }
-  .metric .sub {
-    font-size: 12px;
-    color: var(--color-muted);
-    margin-top: 8px;
-  }
+/* ============================================================
+   METRICS (the outcome closer)
+   ============================================================ */
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 26px 0 18px;
+}
+
+.metric {
+  position: relative;
+  border-radius: var(--radius);
+  padding: 22px 16px 20px;
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.25s ease;
+
+  /* 1. Create a transparent border width framework */
+  border: 1px solid transparent;
+  border-top-width: 5px; /* Adjust this to change your thick edge height */
+
+  /* 2. Double Background: Opaque content area resting on your gradient */
+  background-image:
+    linear-gradient(#ffffff 0%, var(--color-surface) 100%),
+    linear-gradient(180deg, var(--color-success) 0%, #4dd1a1 40%, rgba(77, 209, 161, 0.15) 100%);
+
+  /* 3. The magic clipping alignment to generate the outer border perfectly */
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+
+  /* 4. Ambient, subtle outer glow */
+  box-shadow: 0px 6px 16px var(--color-success-glow);
+}
+
+/* Hover effects cleanly transition the ambient outer glow and lift the card */
+.metric:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 24px var(--color-success-shdw);
+}
+
+/* ==========================================
+   STATE MODIFIER: WARNING (ORANGE) STATE
+   ========================================== */
+.metric.warn {
+  /* Swaps to your warning/orange colors seamlessly */
+  background-image:
+    linear-gradient(white, white),
+    linear-gradient(180deg, var(--color-warning) 0%, var(--color-warning-deep) 40%, rgba(241, 141, 5, 0.15) 100%);
+
+  /* Swaps the glow accent to the orange palette */
+  box-shadow: 0px 6px 16px var(--color-warning-glow);
+}
+
+.metric.warn:hover {
+  box-shadow: 0px 8px 24px var(--color-warning-shdw);
+}
+
+/* ==========================================
+   INNER METRIC TYPOGRAPHY / ASSETS
+   ========================================== */
+.metric .label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.metric .value {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-ink);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.metric .value.positive { color: var(--color-success); }
+.metric .value.warning  { color: var(--color-warning); }
+
+.metric .sub {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: 8px;
+}
 
   /* ============================================================
      CALLOUT + CTA
