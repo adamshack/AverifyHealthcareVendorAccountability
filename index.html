@@ -13,6 +13,8 @@
     --color-acrylic-2: rgba(255, 255, 255, 0.95);
     --color-ink: #0f1e3d;
     --color-ink-soft: #3a4a6b;
+    --color-ink-deep: rgba(15, 30, 61, 0.8);
+    --color-ink-glow: rgba(15, 30, 61, 0.2);
     --color-muted: #6b7a99;
     --color-accent: #1f6feb;
     --color-accent-soft: #6ea8ff;
@@ -59,7 +61,7 @@
     background: var(--color-bg);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
+    overflow: clip;
   }
 
   /* Decorative top hairline glow */
@@ -327,26 +329,32 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
+
   ul.value-pillars li {
+
     position: relative;
-    background: linear-gradient(180deg, #ffffff 0%, var(--color-surface) 100%);
-    border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: 22px 20px;
+    padding: 22px 16px 20px;
     text-align: center;
-    font-weight: 700;
-    color: var(--color-ink);
-    font-size: 17px;
-    box-shadow: var(--shadow-sm);
     overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.25s ease;
+    font-size: 17px;
+    color: var(--color-ink);
+    font-weight: 700;
+
+    /* Create a transparent border width framework */
+    border: 1px solid transparent;
+    border-top-width: 5px;
+    background-image:
+      linear-gradient(#ffffff 0%, var(--color-surface) 100%),
+      linear-gradient(180deg, var(--color-ink-deep) 0%, var(--color-ink) 40%, var(--color-ink-glow) 100%);
+    /* The magic clipping alignment */
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    /* Ambient, subtle outer glow */
+    box-shadow: 1px 3px 12px var(--color-ink-glow);
   }
-  ul.value-pillars li::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-accent), var(--color-glow));
-  }
+
   ul.value-pillars li span {
     display: block;
     font-size: 11px;
@@ -487,25 +495,25 @@
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.25s ease;
 
-    /* 1. Create a transparent border width framework */
+    /* Create a transparent border width framework */
     border: 1px solid transparent;
     border-top-width: 5px; /* Adjust this to change your thick edge height */
 
-    /* 2. Double Background: Opaque content area resting on your gradient */
+    /* Double Background: Opaque content area resting on your gradient */
     background-image:
       linear-gradient(115deg, var(--color-acrylic-1) 0%, var(--color-acrylic-2) 100%),
       linear-gradient(90deg, var(--color-flow-dark), var(--color-flow-deep));
 
-    /* 3. The magic clipping alignment to generate the outer border perfectly */
+    /* The magic clipping alignment to generate the outer border perfectly */
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
 
-    /* 4. Ambient, subtle outer glow */
+    /* Ambient, subtle outer glow */
     box-shadow: 0px 6px 16px var(--color-flow-glow), var(--shadow-md);
   }
 
   .flow-step:hover {
-    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.03);
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.05);
     box-shadow:  0 16px 40px var(--color-flow-glow), var(--shadow-lg);
   }
 
@@ -583,21 +591,17 @@
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-image 0.25s ease;
 
-  /* 1. Create a transparent border width framework */
-  border: 1px solid transparent;
-  border-top-width: 5px; /* Adjust this to change your thick edge height */
-
-  /* 2. Double Background: Opaque content area resting on your gradient */
+  /* Create a transparent border width framework */
+  border: 0.5px solid transparent;
+  border-top-width: 5px;
   background-image:
     linear-gradient(#ffffff 0%, var(--color-surface) 100%),
     linear-gradient(180deg, var(--color-success) 0%, #4dd1a1 40%, rgba(77, 209, 161, 0.15) 100%);
-
-  /* 3. The magic clipping alignment to generate the outer border perfectly */
+  /* The magic clipping alignment */
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
-
-  /* 4. Ambient, subtle outer glow */
-  box-shadow: 0px 6px 16px var(--color-success-glow);
+  /* Ambient, subtle outer glow */
+  box-shadow: 0px 6px 16px var(--color-success-shdw);
 }
 
 /* Hover effects cleanly transition the ambient outer glow and lift the card */
@@ -610,11 +614,9 @@
    STATE MODIFIER: WARNING (ORANGE) STATE
    ========================================== */
 .metric.warn {
-  /* Swaps to your warning/orange colors seamlessly */
   background-image:
     linear-gradient(white, white),
     linear-gradient(180deg, var(--color-warning) 0%, var(--color-warning-deep) 40%, rgba(241, 141, 5, 0.15) 100%);
-
   /* Swaps the glow accent to the orange palette */
   box-shadow: 0px 6px 16px var(--color-warning-glow);
 }
@@ -653,6 +655,361 @@
 }
 
   /* ============================================================
+     OUTCOME — Updated list + floating exec report panels
+     ============================================================ */
+
+  ul.outcome-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 24px;
+    display: grid;
+    gap: 10px;
+  }
+
+  ul.outcome-list li {
+    position: relative;
+    padding: 14px 18px 14px 44px;
+    background: linear-gradient(135deg, #ffffff 0%, var(--color-surface) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    color: var(--color-ink-soft);
+    font-size: 15px;
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    align-items: center;
+    gap: 18px;
+  }
+
+  ul.outcome-list li strong { color: var(--color-ink); font-weight: 700; }
+
+  ul.outcome-list li::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(31, 111, 235, 0.15);
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-align: center;
+    min-width: 78px;
+  }
+  .pill.positive {
+    background: rgba(15, 157, 110, 0.10);
+    color: var(--color-success);
+    border: 1px solid rgba(15, 157, 110, 0.25);
+  }
+  .pill.warning {
+    background: rgba(229, 70, 29, 0.10);
+    color: var(--color-warning);
+    border: 1px solid rgba(229, 70, 29, 0.25);
+  }
+
+  /* The savings summary — total $41.1M vs $22.9M still on the table */
+
+  .savings-summary {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    margin: 28px 0 36px;
+    padding: 22px 28px;
+
+    position: relative;
+    z-index: 2;
+    border-radius: 18px;
+
+    text-align: center;
+
+    overflow: hidden;
+    border: 0.5px solid transparent;
+    border-top-width: 5px;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image:
+      linear-gradient(135deg, #ffffff 0%, var(--color-surface) 100%),
+      linear-gradient(90deg, rgba(12, 133, 88, 0.6), var(--color-glow), rgba(202, 65, 12, 0.6))
+      ;
+    box-shadow: -2px -1px 20px rgba(12, 133, 88, 0.3),
+                 6px -1px 16px rgba(202, 65, 12, 0.1),
+                 0 1px 2px rgba(15, 30, 61, 0.06);
+  }
+
+  .savings-summary::before {
+    content: "";
+    position: absolute;
+    top: -2px; left: 0;
+    height: 3px;
+    z-index: 4;
+    width: 50%;
+    background: linear-gradient(90deg, var(--color-success-deep), var(--color-success-glow));
+  }
+
+  .savings-summary::after {
+    content: "";
+    position: absolute;
+    top: -2px; right: 0;
+    z-index: 6;
+    height: 3px;
+    width: 50%;
+    background: linear-gradient(90deg, var(--color-warning-glow), var(--color-warning-deep));
+  }
+
+  .savings-summary-item { text-align: center; }
+  .ss-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .ss-value {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .savings-summary-item.positive .ss-value { color: var(--color-success); }
+  .savings-summary-item.warning .ss-value { color: var(--color-warning); }
+
+  .savings-summary-divider {
+    width: 1px;
+    height: 56px;
+    background: linear-gradient(180deg, transparent, var(--color-border), transparent);
+  }
+
+  /* ============================================================
+     SCROLL-PINNED EXEC REPORT SHOWCASE
+     ============================================================ */
+
+  .exec-showcase {
+    position: relative;
+    height: 360vh;
+    margin: 40px 0;
+    /* This element's own scroll position drives the timeline.
+       Using view-timeline on the parent of the sticky element is the
+       most reliable pattern. */
+    view-timeline-name: --exec-scroll;
+    view-timeline-axis: block;
+  }
+
+  .exec-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: visible;
+    background:
+      radial-gradient(900px 500px at 50% 50%, rgba(31, 111, 235, 0.06), transparent 70%);
+    border-radius: var(--radius-lg);
+  }
+
+  .exec-stage-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1600px;
+    transform-style: preserve-3d;
+    transform:
+      rotateY(calc(var(--mx, 0) * 4deg))
+      rotateX(calc(var(--my, 0) * -4deg));
+    transition: transform 180ms ease-out;
+  }
+
+  .exec-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+    color: var(--color-ink-soft);
+  }
+  .exec-caption-eyebrow {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+  .exec-caption-title {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-ink);
+    opacity: 0.4;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.3;
+  }
+
+  /* Define the keyframes ONCE, outside any feature query */
+  @keyframes panelFlyIn {
+    from {
+      opacity: 0;
+      transform:
+        translate3d(var(--from-x), var(--from-y), -200px)
+        rotate(var(--from-rot, 0deg))
+        scale(0.6);
+    }
+    to {
+      opacity: 1;
+      transform:
+        translate3d(0, 0, 0)
+        rotate(var(--rest-rot, 0deg))
+        scale(1);
+    }
+  }
+
+  .exec-panel {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    opacity: 0;
+
+    animation-name: panelFlyIn;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: --exec-scroll;
+    animation-range: cover 0% cover 100%;
+  }
+
+  .exec-panel img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Each panel gets its own slice of the view progress */
+  .panel-favunfav   { animation-range: cover 10%  cover 35%; }
+  .panel-percentile { animation-range: cover 25%  cover 50%; }
+  .panel-pathways   { animation-range: cover 40%  cover 65%; }
+  .panel-outliers   { animation-range: cover 55%  cover 80%; }
+
+  /* Resting positions */
+  .panel-favunfav {
+    top: 18%;
+    left: 4%;
+    width: 50%;
+    z-index: 3;
+    box-shadow: 0 28px 60px rgba(15, 30, 61, 0.22);
+  }
+  .panel-percentile {
+    top: 20%;
+    right: 4%;
+    width: 46%;
+    z-index: 4;
+    box-shadow: 0 24px 50px rgba(15, 30, 61, 0.24);
+  }
+  .panel-pathways {
+    top: 56%;
+    right: 6%;
+    width: 54%;
+    z-index: 2;
+    box-shadow: 0 18px 40px rgba(15, 30, 61, 0.18);
+  }
+  .panel-outliers {
+    top: 60%;
+    left: 8%;
+    width: 38%;
+    z-index: 5;
+    box-shadow: 0 32px 65px rgba(15, 30, 61, 0.28);
+  }
+
+  .exec-panel:hover {
+    z-index: 20;
+    box-shadow: 0 36px 70px rgba(15, 30, 61, 0.32);
+  }
+
+  /* Fallback for browsers WITHOUT scroll-driven animation */
+  @supports not (animation-timeline: --x) {
+    .exec-showcase { height: auto; }
+    .exec-stage { position: relative; height: 75vh; min-height: 600px; }
+    .exec-panel {
+      animation-name: none;
+      opacity: 1;
+      transform: rotate(var(--rest-rot, 0deg));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .exec-showcase { height: auto; }
+    .exec-stage { position: relative; height: auto; min-height: 600px; padding-bottom: 40px; }
+    .exec-panel {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: rotate(var(--rest-rot, 0deg)) !important;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .exec-showcase { height: auto; margin: 24px 0; }
+    .exec-stage { position: relative; height: auto; padding: 24px 0; }
+    .exec-stage-inner { transform: none !important; }
+    .exec-caption { position: relative; top: auto; left: auto; transform: none; margin-bottom: 20px; }
+    .exec-panel {
+      position: relative !important;
+      top: auto !important; left: auto !important; right: auto !important;
+      width: 100% !important;
+      margin-bottom: 18px;
+      animation: none !important;
+      opacity: 1 !important;
+      transform: rotate(0deg) !important;
+    }
+  }
+
+  @media print {
+    .exec-showcase { height: auto; page-break-inside: avoid; }
+    .exec-stage {
+      position: relative;
+      height: auto;
+      overflow: visible;
+      background: none;
+    }
+    .exec-stage-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      perspective: none;
+      transform: none !important;
+    }
+    .exec-caption { display: none; }
+    .exec-panel {
+      position: static !important;
+      width: 100% !important;
+      transform: none !important;
+      animation: none !important;
+      opacity: 1 !important;
+      box-shadow: none !important;
+      border: 1px solid var(--color-border);
+      page-break-inside: avoid;
+    }
+  }
+
+  /* ============================================================
      CALLOUT + CTA
      ============================================================ */
   .callout {
@@ -666,7 +1023,7 @@
     box-shadow: var(--shadow-sm);
   }
 
-  .calltoaction {
+  .call-to-action {
     background: linear-gradient(135deg, #ffffff 0%, var(--color-surface-2) 100%);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -676,28 +1033,28 @@
     position: relative;
     overflow: hidden;
   }
-  .calltoaction::before {
+  .call-to-action::before {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--color-accent), var(--color-glow), var(--color-accent));
   }
-  .calltoaction h3 {
+  .call-to-action h3 {
     margin: 0;
     font-size: 18px;
     line-height: 1.5;
     color: var(--color-ink);
     font-weight: 600;
   }
-  .calltoaction a {
+  .call-to-action a {
     color: var(--color-accent);
     font-weight: 700;
     text-decoration: none;
     border-bottom: 1px solid var(--color-accent-soft);
     transition: border-color 0.2s ease;
   }
-  .calltoaction a:hover { border-bottom-color: var(--color-accent); }
+  .call-to-action a:hover { border-bottom-color: var(--color-accent); }
 
   /* ============================================================
      FOOTER
@@ -763,7 +1120,7 @@
     h3 { font-size: 16pt; }
     p  { font-size: 11pt; }
 
-    section, .feature-card, .metric, .flow, ol.questions, .callout, .metrics, .calltoaction {
+    section, .feature-card, .metric, .flow, ol.questions, .callout, .metrics, .call-to-action {
       page-break-inside: avoid;
       break-inside: avoid;
     }
@@ -787,7 +1144,7 @@
     .metric .label { font-size: 9pt; }
     .metric .sub { font-size: 9pt; }
 
-    .calltoaction { box-shadow: none !important; padding: 18px 22px; }
+    .call-to-action { box-shadow: none !important; padding: 18px 22px; }
 
     a[href]::after { content: "" !important; }
   }
@@ -934,38 +1291,86 @@
       <section>
         <h2>The Outcome</h2>
         <p>The result is a simple but comprehensive process that ensures all vendors are aligned and accountable to their role in achieving the financial objectives of the plan as a whole.</p>
-        <h3>Best of all, the C-Suite can manage the plan with a single page:</h3>
+        <h3>Best of all, the C-Suite can manage the plan with a single page that reports on how well the plan:</h3>
 
-        <div class="metrics">
-          <div class="metric">
-            <div class="label">Beat the Market</div>
-            <div class="value positive">+9%</div>
-            <div class="sub">vs. benchmark pricing</div>
+        <ul class="outcome-list">
+          <li>
+            <span class="ol-verb">Achieved</span>
+            <span class="ol-subject"><strong>measurable savings</strong> that beat market prices</span>
+            <span class="pill positive">+9%</span>
+          </li>
+          <li>
+            <span class="ol-verb">Delivered</span>
+            <span class="ol-subject"><strong>top quartile quality</strong></span>
+            <span class="pill positive">4.29</span>
+          </li>
+          <li>
+            <span class="ol-verb">Improved</span>
+            <span class="ol-subject"><strong>member health risk</strong></span>
+            <span class="pill positive">−3.2 pts</span>
+          </li>
+          <li>
+            <span class="ol-verb">Identified</span>
+            <span class="ol-subject">the <strong>work remaining</strong> to improve overall efficiency</span>
+            <span class="pill warning">$22.9M</span>
+          </li>
+        </ul>
+
+        <!-- Floating savings + opportunity summary -->
+        <div class="savings-summary">
+          <div class="savings-summary-item positive">
+            <div class="ss-label">Total Savings Achieved</div>
+            <div class="ss-value">$41.1M</div>
           </div>
-          <div class="metric">
-            <div class="label">Delivered Quality</div>
-            <div class="value positive">4.29</div>
-            <div class="sub">top quartile</div>
-          </div>
-          <div class="metric">
-            <div class="label">Member Health Risk</div>
-            <div class="value positive">−3.2</div>
-            <div class="sub">points improved</div>
-          </div>
-          <div class="metric warn">
-            <div class="label">Excess Cost Remaining</div>
-            <div class="value warning">$22.9M</div>
-            <div class="sub">opportunity ahead</div>
+          <div class="savings-summary-divider" aria-hidden="true"></div>
+          <div class="savings-summary-item warning">
+            <div class="ss-label">Ongoing Opportunity to Capture</div>
+            <div class="ss-value">$22.9M</div>
           </div>
         </div>
+      </section>
 
+      <!-- ===================== SCROLL-PINNED EXEC REPORT SHOWCASE ===================== -->
+      <section class="exec-showcase" aria-label="Averify executive report showcase">
+        <div class="exec-stage">
+          <div class="exec-stage-inner" id="execStage">
+            <div class="exec-caption">
+              <span class="exec-caption-eyebrow">Live from a real client</span>
+              <span class="exec-caption-title">The Averify Executive Performance Review</span>
+            </div>
+
+            <div class="exec-panel panel-favunfav"
+                 style="--from-x: -120vw; --from-y: -10vh; --from-rot: -18deg; --rest-rot: -1.4deg; --depth: 1; --start: 0; --end: 0.25;">
+              <img src="demo_exec_fav_unf_split.svg" alt="Favorable versus unfavorable provider split, $40.1M below market and $22.9M above market" />
+            </div>
+
+            <div class="exec-panel panel-percentile"
+                 style="--from-x: 130vw; --from-y: -8vh; --from-rot: 22deg; --rest-rot: 1.8deg; --depth: 0.85; --start: 0.18; --end: 0.43;">
+              <img src="demo_exec_percentile_plot.svg" alt="Variability Cost Index percentile plot showing 2025 YTD versus market rate" />
+            </div>
+
+            <div class="exec-panel panel-pathways"
+                 style="--from-x: 110vw; --from-y: 50vh; --from-rot: -14deg; --rest-rot: -0.9deg; --depth: 0.65; --start: 0.36; --end: 0.61;">
+              <img src="demo_exec_care_pathways.svg" alt="Care pathways breakdown across circulatory, neoplasms, musculoskeletal, mental & behavioral, and endocrine categories" />
+            </div>
+
+            <div class="exec-panel panel-outliers"
+                 style="--from-x: -110vw; --from-y: 55vh; --from-rot: 16deg; --rest-rot: 1.2deg; --depth: 1.15; --start: 0.54; --end: 0.79;">
+              <img src="demo_exec_outlier_claimants.svg" alt="Outlier claimants summary, 258 claimants with $54.4M paid" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resume normal flow with the closing callout -->
+      <section>
         <div class="callout">
           When Averify is engaged, costs drop, ERISA "best interest" exposure becomes avoidable, and each vendor's ROI is independently validated.
         </div>
       </section>
 
       <!-- ===================== CALL TO ACTION ===================== -->
-      <section class="calltoaction">
+      <section class="call-to-action">
         <h3>Ready to see what's hiding in your plan's data?<br>
         Reach out at <a href="mailto:solutions@averify.com">solutions@averify.com</a> for a demo.<br>
         <em style="color: var(--color-muted); font-weight: 500; font-size: 15px;">We don't deliver healthcare — we make sure healthcare delivers.</em></h3>
@@ -978,5 +1383,47 @@
     </footer>
 
   </div>
+
+
+<script>
+  // Mouse-move parallax for the exec showcase stage.
+  // Sets CSS custom properties --mx and --my (range -1 to 1) on the stage,
+  // which the CSS uses to tilt the scene in 3D.
+  (function() {
+    const stage = document.getElementById('execStage');
+    if (!stage) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(max-width: 720px)').matches) return;
+
+    let rafId = null;
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    function onMove(e) {
+      const rect = stage.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      // Normalize to -1..1 across a generous radius (whole viewport)
+      targetX = Math.max(-1, Math.min(1, (e.clientX - cx) / (window.innerWidth / 2)));
+      targetY = Math.max(-1, Math.min(1, (e.clientY - cy) / (window.innerHeight / 2)));
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
+    function tick() {
+      // Easing toward target for smoothness
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      stage.style.setProperty('--mx', currentX.toFixed(3));
+      stage.style.setProperty('--my', currentY.toFixed(3));
+      if (Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = null;
+      }
+    }
+
+    window.addEventListener('mousemove', onMove, { passive: true });
+  })();
+</script>
 </body>
 </html>
