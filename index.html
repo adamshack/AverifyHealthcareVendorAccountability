@@ -247,7 +247,8 @@
       linear-gradient(135deg, #0f1e3d 0%, #1f6feb 100%);
     color: #ffffff;
     border-radius: var(--radius-lg);
-    padding: 44px 44px 40px;
+    margin: 0 -32px;
+    padding: 36px 16px 46px;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
   }
@@ -281,7 +282,7 @@
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--color-glow);
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     font-weight: 700;
   }
 
@@ -292,19 +293,22 @@
 
   .feature-card .brand-logo {
     display: block;
-    margin: 0 auto 14px;
+    margin: 0 auto 8px;
     height: 88px;
     width: auto;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.45))
+            drop-shadow(0px 10px 60px rgba(0, 0, 0, 0.25));
   }
 
   .feature-card .subhead {
     position: relative;
-    font-size: 17px;
+    font-size: 32px;
     color: var(--color-glow);
     margin: 0 0 16px;
     font-weight: 600;
     letter-spacing: 0.02em;
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.35))
+            drop-shadow(0px 10px 60px rgba(0, 0, 0, 0.15));
   }
 
   .feature-card .lede {
@@ -312,8 +316,8 @@
     font-size: 18px;
     color: #ffffff;
     margin: 0 auto;
-    max-width: 560px;
-    line-height: 1.5;
+    max-width: 640px;
+    line-height: 1.3;
     font-weight: 500;
     font-style: italic;
   }
@@ -832,7 +836,7 @@
 
   .exec-showcase {
     position: relative;
-    height: 660vh;
+    height: 520vh;
     margin: 40px 0;
     /* This element's own scroll position drives the timeline.
        Using view-timeline on the parent of the sticky element is the
@@ -880,13 +884,13 @@
   }
 
   @keyframes captionDrift {
-    0%   { transform: translate(-50%, calc(-50% + 4vh)) translateZ(-50px); }
-    100% { transform: translate(-50%, calc(-50% - 4vh)) translateZ(-50px); }
+    0%   { transform: translate(-50%, calc(-50% + 15vh)) translateZ(-50px); }
+    100% { transform: translate(-50%, calc(-50% - 15vh)) translateZ(-50px); }
   }
 
   .exec-caption {
     position: absolute;
-    top: 50%;
+    top: 5%;
     left: 50%;
     transform: translate(-50%, -50%) translateZ(-50px);
     text-align: center;
@@ -921,35 +925,16 @@
     line-height: 1.3;
   }
 
-  /* V1
-  @keyframes panelFlyIn {
-    from {
-      opacity: 0;
-      transform:
-        translate3d(var(--from-x), var(--from-y), -200px)
-        rotate(var(--from-rot, 0deg))
-        scale(0.6);
-    }
-    to {
-      opacity: 1;
-      transform:
-        translate3d(0, 0, 0)
-        rotate(var(--rest-rot, 0deg))
-        scale(1);
-    }
-  }
-  */
-
   @keyframes panelFlyIn {
     0% {
       opacity: 0;
       transform:
-        translate3d(var(--from-x), var(--from-y), -200px)
+        translate3d(var(--from-x), var(--from-y), 1px)
         rotate(var(--from-rot, 0deg))
-        scale(2.6);
+        scale(2.1);
     }
-    70% {
-      opacity: 1;
+    60% {
+      opacity: 0.9;
       transform:
         translate3d(0, 0, 60px)
         rotate(calc(var(--rest-rot, 0deg) * 1.3))
@@ -967,13 +952,15 @@
   .exec-panel {
     position: absolute;
     background: #ffffff;
-    border: 1px solid var(#000);
+    border: none;
+    outline: 2px solid rgba(0,0,0,0.1);
+    outline-offset: -1.5px;
     border-radius: 12px;
     overflow: hidden;
     transform-style: preserve-3d;
     will-change: transform, opacity;
     opacity: 0;
-   z-index: 10;
+    z-index: 10;
 
     animation-name: panelFlyIn;
     animation-duration: 1ms;
@@ -991,15 +978,15 @@
   }
 
 /* Each panel gets its own slice of the view progress — sequenced 1→4 */
-.panel-percentile { animation-range: cover 10% cover 35%; }
-.panel-pathways   { animation-range: cover 28% cover 53%; }
-.panel-outliers   { animation-range: cover 46% cover 71%; }
-.panel-favunfav   { animation-range: cover 64% cover 89%; }
+.panel-percentile { animation-range: cover 3% cover 25%; }
+.panel-pathways   { animation-range: cover 22% cover 38%; }
+.panel-outliers   { animation-range: cover 33% cover 51%; }
+.panel-favunfav   { animation-range: cover 54% cover 79%; }
 
   /* Resting positions */
 
   .panel-percentile {
-    top: 12%;
+    top: 6%;
     left: 1%;
     width: 68%;
     z-index: 11;
@@ -1055,22 +1042,6 @@
       animation: none !important;
       opacity: 1 !important;
       transform: rotate(var(--rest-rot, 0deg)) !important;
-    }
-  }
-
-  @media (max-width: 720px) {
-    .exec-showcase { height: auto; margin: 24px 0; }
-    .exec-stage { position: relative; height: auto; padding: 24px 0; }
-    .exec-stage-inner { transform: none !important; }
-    .exec-caption { position: relative; top: auto; left: auto; transform: none; margin-bottom: 20px; }
-    .exec-panel {
-      position: relative !important;
-      top: auto !important; left: auto !important; right: auto !important;
-      width: 100% !important;
-      margin-bottom: 18px;
-      animation: none !important;
-      opacity: 1 !important;
-      transform: rotate(0deg) !important;
     }
   }
 
@@ -1171,17 +1142,30 @@
      RESPONSIVE
      ============================================================ */
   @media (max-width: 720px) {
-    .hero, .content, .footer { padding-left: 28px; padding-right: 28px; }
+    .hero, .content, .footer { padding-left: 28px; padding-right: 28px; border-radius: 0; }
     .hero-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
     .hero-tagline { text-align: left; }
     ul.value-pillars { grid-template-columns: 1fr; }
     .metrics { grid-template-columns: repeat(2, 1fr); }
-    .feature-card { padding: 32px 24px; }
+    .feature-card { padding: 32px 24px; border-radius: 0; }
     .feature-card .brand-logo { height: 64px; }
     .feature-card .lede { font-size: 16px; }
+    .exec-showcase { height: auto; margin: 24px 0; }
+    .exec-stage { position: relative; height: auto; padding: 24px 0; }
+    .exec-stage-inner { transform: none !important; }
+    .exec-caption { position: relative; top: auto; left: auto; transform: none; margin-bottom: 20px; }
+    .exec-panel {
+      position: relative !important;
+      top: auto !important; left: auto !important; right: auto !important;
+      width: 100% !important;
+      margin-bottom: 18px;
+      animation: none !important;
+      opacity: 1 !important;
+      transform: rotate(0deg) !important;
+    }
   }
 
-  /* ============================================================
+ /* ============================================================
      PRINT (two-page)
      ============================================================ */
   @page { size: Letter; margin: 0.5in 0.55in; }
@@ -1191,21 +1175,23 @@
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
       color-adjust: exact !important;
+      animation: none !important;
+      transition: none !important;
     }
+
     html, body {
       background: #ffffff !important;
       margin: 0; padding: 0;
       font-size: 11.5pt;
       line-height: 1.55;
     }
+
     .page {
       max-width: 100%;
       margin: 0;
       box-shadow: none !important;
       border-radius: 0 !important;
     }
-    /* Disable animations in print */
-    *, *::before, *::after { animation: none !important; transition: none !important; }
 
     .hero { padding: 24px 36px; border-radius: 0 !important; page-break-inside: avoid; }
     .hero-logo .logo { height: 44px; width: 124px; }
@@ -1218,12 +1204,15 @@
     h3 { font-size: 16pt; }
     p  { font-size: 11pt; }
 
-    section, .feature-card, .metric, .flow, ol.questions, .callout, .metrics, .call-to-action {
+    /* Pages should keep their content together */
+    section, .feature-card, .metric, .flow, ol.questions, .callout, .metrics,
+    .call-to-action, .savings-summary, ul.outcome-list, ul.outcome-list li {
       page-break-inside: avoid;
       break-inside: avoid;
     }
     h2, h3 { page-break-after: avoid; break-after: avoid; }
 
+    /* Page break after the introducing section */
     .feature-section { margin: 26px 0 0; page-break-after: always; break-after: page; }
     .feature-card { padding: 28px 32px; box-shadow: none !important; }
     .feature-card .brand-logo { height: 70px; }
@@ -1241,6 +1230,64 @@
     .metric .value { font-size: 22pt; }
     .metric .label { font-size: 9pt; }
     .metric .sub { font-size: 9pt; }
+
+    /* Outcome list — keep the colored pills, tighten the grid */
+    ul.outcome-list li {
+      grid-template-columns: 90px 1fr auto;
+      gap: 12px;
+      padding: 10px 14px 10px 36px;
+      font-size: 10.5pt;
+      box-shadow: none !important;
+    }
+    .pill {
+      font-size: 10pt;
+      padding: 3px 10px;
+      min-width: 60px;
+    }
+
+    /* Savings summary — keep the colored stripe and big numbers, lose the glow */
+    .savings-summary {
+      box-shadow: none !important;
+      padding: 16px 22px;
+      margin: 14px 0 20px;
+    }
+    .ss-value { font-size: 28pt; }
+    .ss-label { font-size: 9pt; }
+
+    /* ----- Exec showcase: flatten the entire scroll-pinned sequence ----- */
+    .exec-showcase {
+      height: auto !important;
+      page-break-inside: avoid;
+    }
+    .exec-stage {
+      position: relative !important;
+      height: auto !important;
+      overflow: visible !important;
+      background: none !important;
+    }
+    .exec-stage-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      perspective: none !important;
+      transform: none !important;
+    }
+    .exec-caption {
+      display: none !important;
+    }
+    .exec-panel {
+      position: static !important;
+      width: 100% !important;
+      transform: none !important;
+      opacity: 1 !important;
+      box-shadow: none !important;
+      border: 1px solid var(--color-border) !important;
+      page-break-inside: avoid;
+    }
+    .exec-panel img {
+      width: 100% !important;
+      height: auto !important;
+    }
 
     .call-to-action { box-shadow: none !important; padding: 18px 22px; }
 
@@ -1260,7 +1307,7 @@
         </div>
         <div class="hero-tagline">
           Healthcare Vendor Accountability
-          <strong>Verified · Aligned · Delivered</strong>
+          <strong>Verify · Align · Deliver</strong>
         </div>
       </div>
     </header>
@@ -1270,19 +1317,19 @@
 
       <section>
         <h2>The Problem</h2>
-        <p>The healthcare affordability crisis is deeper than the fact that costs are increasing at twice the rate of inflation. Industry profits are increasing even faster — four times as fast as inflation. The savings employers were promised from industry consolidation and innovation never trickled down to employers who can't track the leaks wasting money in their plans.</p>
-        <p>What's preventing employers from benefiting from industry efficiencies <em>is the leakage</em> — money the plan spent unnecessarily and never knew it happened. These leaks come in three forms:</p>
+        <p>The healthcare affordability crisis is deeper than the fact that costs are increasing at twice the rate of inflation. Industry profits are increasing even faster — four times as fast as inflation. The savings employers were promised from industry consolidation and innovation never trickled down to employers who can't track the waste hidden inside their data.</p>
+        <p>What's preventing employers from benefiting from industry efficiencies <em>is the waste they never see</em>. The money that leaks out of the company checking account the plan never knew it paid. These leaks come in three forms:</p>
         <ol class="questions">
           <li><b>Above-market prices</b> the plan never saw</li>
           <li><b>Low-quality care</b> the plan never revealed</li>
-          <li><b>Declining member health</b> risk the plan could not track</li>
+          <li><b>Declining member health</b> the plan could not track</li>
         </ol>
-        <p>The salt in this wound is that the patchwork of siloed vendors addressing these three areas self-reports savings, so they tend to overstate savings and under-report missed opportunities.</p>
+        <p>The salt in this wound is the patchwork of vendors addressing these three areas. They operate in silos, self-reports savings, and focus on their ROI, rather than overall plan performance. Missed opportunities, conflict with other vendors' actions, and generalized "savings" estimates never make the reports. It is as much a disservice to high-performing vendors as it is to the plan.</p>
       </section>
 
       <section>
         <h2>The Opportunity</h2>
-        <h3>Averify seals the leaks, solving employer healthcare waste through vendor accountability across all three areas.</h3>
+        <h3>Averify finds the leaks, seals them, and then monitors vendor performance to solve healthcare waste through vendor accountability in price, quality, and risk.</h3>
       </section>
 
       <!-- ===================== FEATURED "INTRODUCING" ===================== -->
@@ -1302,8 +1349,8 @@
           <p>We use high-resolution data to surface the inconsistencies that cause the price, quality, and risk leaks wasting plan dollars. As the single source of truth on vendor performance, Averify independently connects siloed outcomes to overall plan performance to:</p>
           <ul class="value-pillars">
             <li><span>Verify</span>Savings Achieved</li>
-            <li><span>Uncover</span>Opportunities Missed</li>
-            <li><span>Pre-Validate</span>Vendor Solutions</li>
+            <li><span>Align</span>Vendor Accountability</li>
+            <li><span>Deliver</span>Pre-Validated Solutions</li>
           </ul>
         </div>
       </section>
@@ -1311,7 +1358,7 @@
       <!-- ===================== HOW IT WORKS — CIRCULAR FLOW ===================== -->
       <section>
         <h2>How It Works</h2>
-        <h3>One small fixed PEPM fee. A continuous loop of accountability.</h3>
+        <h3>One small fixed PEPM fee. A continuous cycle of accountable performance.</h3>
         <p>Averify identifies customer-specific leaks, attributes savings and missed opportunities to pre-validated strategies, aligns vendors to the plan's needs (not just their siloed performance guarantees), and monitors ongoing performance to track each vendor's ROI.</p>
 
         <div class="flow" role="img" aria-label="Averify's continuous four-step accountability loop: Indexing, Attributing, Aligning, Monitoring">
@@ -1374,7 +1421,7 @@
 
           <div class="flow-step step-3">
             <div class="head"><span class="num">3.</span><span class="verb">Aligning</span></div>
-            <div class="desc">vendors for optimal plan performance</div>
+            <div class="desc">vendors for optimal plan performance accountability</div>
           </div>
 
           <div class="flow-step step-4">
@@ -1388,8 +1435,8 @@
       <!-- ===================== OUTCOME ===================== -->
       <section>
         <h2>The Outcome</h2>
-        <p>The result is a simple but comprehensive process that ensures all vendors are aligned and accountable to their role in achieving the financial objectives of the plan as a whole.</p>
-        <h3>Best of all, the C-Suite can manage the plan with a single page that reports on how well the plan:</h3>
+        <p>The result is a simple but comprehensive process that always points the plan towards value – the right care, at the right price, with the best outcome by aligning all vendors with their role in achieving the financial objectives of the plan as a whole. Accountable Care for todays informed buyers.</p>
+        <h3>Best of all, the C-Suite sees how the plan is performing in a single-page report:</h3>
 
         <ul class="outcome-list">
           <li>
@@ -1443,25 +1490,25 @@
 
               <!-- Panel 1: arrives first, sits behind everything -->
               <div class="exec-panel panel-percentile"
-                   style="--from-x: -130vw; --from-y: -58vh; --from-rot: 22deg; --rest-rot: 0deg;">
+                   style="--from-x: -130vw; --from-y: -28vh; --from-rot: 22deg; --rest-rot: 0deg;">
                 <img src="demo_exec_percentile_plot.svg" alt="Variability Cost Index percentile plot showing 2025 YTD versus market rate" />
               </div>
 
               <!-- Panel 2 -->
               <div class="exec-panel panel-pathways"
-                   style="--from-x: 110vw; --from-y: -10vh; --from-rot: -14deg; --rest-rot: -0.2deg;">
+                   style="--from-x: 110vw; --from-y: -10vh; --from-rot: -14deg; --rest-rot: 0deg;">
                 <img src="demo_exec_care_pathways.svg" alt="Care pathways breakdown across circulatory, neoplasms, musculoskeletal, mental & behavioral, and endocrine categories" />
               </div>
 
               <!-- Panel 3 -->
               <div class="exec-panel panel-outliers"
-                   style="--from-x: 130vw; --from-y: 55vh; --from-rot: 16deg; --rest-rot: 0.4deg;">
+                   style="--from-x: 130vw; --from-y: 55vh; --from-rot: 16deg; --rest-rot: 0deg;">
                 <img src="demo_exec_outlier_claimants.svg" alt="Outlier claimants summary, 258 claimants with $54.4M paid" />
               </div>
 
               <!-- Panel 4: arrives last, sits on top -->
               <div class="exec-panel panel-favunfav"
-                   style="--from-x: -120vw; --from-y: 50vh; --from-rot: -18deg; --rest-rot: -0.1deg;">
+                   style="--from-x: -120vw; --from-y: 50vh; --from-rot: -18deg; --rest-rot: 0deg;">
                 <img src="demo_exec_fav_unf_split.svg" alt="Favorable versus unfavorable provider split, $40.1M below market and $22.9M above market" />
               </div>
 
@@ -1480,13 +1527,13 @@
       <section class="call-to-action">
         <h3>Ready to see what's hiding in your plan's data?<br>
         Reach out at <a href="mailto:solutions@averify.com">solutions@averify.com</a> for a demo.<br>
-        <em style="color: var(--color-muted); font-weight: 500; font-size: 15px;">We don't deliver healthcare — we make sure healthcare delivers.</em></h3>
+        </h3>
       </section>
 
     </main>
 
     <footer class="footer">
-      Averify &middot; The Healthcare Vendor Accountability Platform
+      <em style="color: var(--color-muted); font-weight:400; font-size: 14px;">Averify &middot; We don't deliver healthcare — we make sure healthcare delivers.</em>
     </footer>
 
   </div>
